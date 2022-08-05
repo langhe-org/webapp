@@ -9,10 +9,3 @@
 [default-styles] {
   all: revert;
 }
-
-
-
-a:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
