@@ -3,9 +3,9 @@ import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { useState } from 'react'
-import { User, Units } from './types/user'
-import { Greenhouse, GreenhouseType } from './types/greenhouse'
-import { ControlMode, EnvironmentState, GreenhouseState, IpmState, LightningState } from './types/greenhouse-state'
+import { User, Units } from '../types/user'
+import { Greenhouse, GreenhouseType } from '../types/greenhouse'
+import { ControlMode, EnvironmentState, GreenhouseState, IpmState, LightningState } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
