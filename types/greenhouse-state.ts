@@ -2,21 +2,48 @@ export enum ControlMode {
     Automatic = "automatic",
     Manual = "manual",
 }
+export function control_mode_display(mode?: ControlMode) {
+    if(mode === ControlMode.Automatic)
+        return "Automatic";
+    if(mode === ControlMode.Manual)
+        return "Manual";
+    return "";
+}
 
 export enum EnvironmentState {
     Default = "default",
+}
+export function environment_state_display(state?: EnvironmentState) {
+    if(state === EnvironmentState.Default)
+        return "Default";
+    return "";
 }
 
 export enum IpmState {
     Default = "default",
 }
+export function ipm_state_display(state?: IpmState) {
+    if(state === IpmState.Default)
+        return "Default";
+    return "";
+}
 
 export enum LightningState {
     Default = "default",
 }
+export function lightning_state_display(state?: LightningState) {
+    if(state === LightningState.Default)
+        return "Default";
+    return "";
+}
 
 export enum Weather {
     Default = "default",
+}
+export function weather_display(weather?: Weather) {
+    if(weather === Weather.Default)
+        return "Default";
+    return "";
 }
 
 export interface GreenhouseState {
