@@ -1,22 +1,22 @@
 export enum ControlMode {
-    Automatic,
-    Manual,
+    Automatic = "automatic",
+    Manual = "manual",
 }
 
 export enum EnvironmentState {
-    Default,
+    Default = "default",
 }
 
 export enum IpmState {
-    Default,
+    Default = "default",
 }
 
 export enum LightningState {
-    Default,
+    Default = "default",
 }
 
 export enum Weather {
-    Default,
+    Default = "default",
 }
 
 export interface GreenhouseState {

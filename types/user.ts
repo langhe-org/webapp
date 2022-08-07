@@ -1,6 +1,6 @@
 export enum Units {
-    Metric,
-    Imperial,
+    Metric = "metric",
+    Imperial = "imperial",
 }
 
 export interface User {
