@@ -1,5 +1,5 @@
 export enum GreenhouseType {
-    proto_1_ithaca,
+    proto_1_ithaca = "proto_1_ithaca",
 }
 
 export interface Greenhouse {
