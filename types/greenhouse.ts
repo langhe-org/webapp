@@ -9,4 +9,5 @@ export interface Greenhouse {
     location_name?: String;
     longitude: number;
     latitude: number;
+    timezone: string;
 }
