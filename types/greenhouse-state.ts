@@ -37,35 +37,53 @@ export function lightning_state_display(state?: LightningState) {
     return "";
 }
 
-export enum Weather {
+export interface Sensor {
+    temperature: number;
+    humidity: number;
+    quantum : number;
+}
+
+export interface Subsystem {
+    mode: ControlMode;
+    state: LightningState;
+}
+
+export interface Control {
+    environment: Subsystem;
+    ipm: Subsystem;
+    lighting: Subsystem;
+    irrigation: Subsystem;
+}
+
+export interface Actuator {
+    heater: boolean;
+    exhaust: boolean;
+    ventilator: boolean;
+    sulfur: boolean;
+    lights: boolean;
+    valves: boolean[];
+}
+
+export enum SkyWeather {
     Default = "default",
 }
-export function weather_display(weather?: Weather) {
-    if(weather === Weather.Default)
-        return "Default";
-    return "";
+
+export interface WeatherCurrent {
+    temperature: number;
+    humidity: number;
+    sky: SkyWeather;
+}
+
+export interface Weather {
+    current: WeatherCurrent;
 }
 
 export interface GreenhouseState {
     id: number;
     greenhouse_id: number;
     time: Date;
-    timezone: number;
-    dst: Boolean;
-    temperature: number;
-    humidity: number;
-    quantum: number;
-    environment_mode: ControlMode;
-    environment_state: EnvironmentState;
-    ipm_mode: ControlMode;
-    ipm_state: IpmState;
-    lighting_mode: ControlMode;
-    lighting_state: LightningState;
-    heater: Boolean;
-    exhaust: Boolean;
-    ventilator: Boolean;
-    sulfur: Boolean;
-    weather_temperature?: number;
-    weather_humidity?: number;
-    weather_sky?: Weather;
+    sensor: Sensor;
+    control: Control;
+    actuator: Actuator;
+    weather?: Weather;
 }

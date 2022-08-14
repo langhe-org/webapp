@@ -29,6 +29,7 @@ const Home: NextPage = () => {
       location_name: "Itheca, NY",
       longitude: 90,
       latitude: 90,
+      timezone: "",
     });
   }, networkDelay());
   setTimeout(() => {
@@ -36,7 +37,6 @@ const Home: NextPage = () => {
       id: 1,
       greenhouse_id: 1,
       time: new Date,
-      timezone: 1,
       dst: true,
       temperature: 1,
       humidity: 1,
