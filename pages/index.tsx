@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { User, Units } from '../types/user'
 import { Greenhouse, GreenhouseType } from '../types/greenhouse'
 import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, LightningState, lightning_state_display } from '../types/greenhouse-state'
@@ -10,57 +10,26 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Icon, IconButton } from '@mui/material';
+import { api } from '../services/api'
 
-function networkDelay() {
-  const min = 100;
-  const max = 1200;
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+
 const Home: NextPage = () => {
   const [user, setUser] = useState<User>();
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
 
-  setTimeout(() => {
-    setGreenhouse({
-      id: 1,
-      name: "Main prototype",
-      type: GreenhouseType.proto_1_ithaca,
-      location_name: "Itheca, NY",
-      longitude: 90,
-      latitude: 90,
-      timezone: "",
-    });
-  }, networkDelay());
-  setTimeout(() => {
-    setGreenhouseState({
-      id: 1,
-      greenhouse_id: 1,
-      time: new Date,
-      dst: true,
-      temperature: 1,
-      humidity: 1,
-      quantum: 1,
-      environment_mode: ControlMode.Automatic,
-      environment_state: EnvironmentState.Default,
-      ipm_mode: ControlMode.Manual,
-      ipm_state: IpmState.Default,
-      lighting_mode: ControlMode.Manual,
-      lighting_state: LightningState.Default,
-      heater: true,
-      exhaust: true,
-      ventilator: true,
-      sulfur: true,
-    });
-  }, networkDelay());
-  setTimeout(() => {
-    setUser({
-      id: 1,
-      name: "Mendy",
-      email: "mendy@example.com",
-      units: Units.Imperial,
-    });
-  }, networkDelay());
+  useEffect(() => {
+    api<User>("/user/1")
+      .then(user => setUser(user))
+  }, []);
+  useEffect(() => {
+    api<Greenhouse>("/greenhouse/2")
+      .then(greenhouse => setGreenhouse(greenhouse))
+  }, []);
+  useEffect(() => {
+    api<GreenhouseState>("/greenhouse-state/1")
+      .then(greenhouseState => setGreenhouseState(greenhouseState))
+  }, []);
 
   const styles = {
     main: {
@@ -146,9 +115,9 @@ const Home: NextPage = () => {
                   Environment
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  {environment_state_display(greenhouseState?.environment_state)}
+                  {environment_state_display(greenhouseState?.control.environment.state as EnvironmentState | undefined)}
                 </Typography>
-                <Chip label={control_mode_display(greenhouseState?.environment_mode)} sx={styles.cardChip} />
+                <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
               </CardContent>
             </CardActionArea>
           </Card>
@@ -163,9 +132,9 @@ const Home: NextPage = () => {
                   Lighting
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  {lightning_state_display(greenhouseState?.lighting_state)}
+                  {lightning_state_display(greenhouseState?.control.lighting.state)}
                 </Typography>
-                <Chip label={control_mode_display(greenhouseState?.lighting_mode)} sx={styles.cardChip} />
+                <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
               </CardContent>
             </CardActionArea>
           </Card>
