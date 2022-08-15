@@ -1,3 +1,4 @@
+export const JWT_KEY = "JWT";
 const BASE_URL = "https://proto2-357815.uc.r.appspot.com";
 
 export function api<T>(url: string, method: string = "GET", data?: any): Promise<T> {
@@ -5,7 +6,7 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
         method,
         body: JSON.stringify(data),
         headers: {
-            authorization: "Bearer " + localStorage.getItem("JWT"),
+            authorization: "Bearer " + localStorage.getItem(JWT_KEY),
         }
     })
         .then(res => {
