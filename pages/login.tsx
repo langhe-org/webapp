@@ -4,12 +4,17 @@ import { NextRouter, useRouter } from 'next/router';
 import { api, JWT_KEY } from '../services/api';
 import { User } from '../types/user';
 import { Typography } from '@mui/material';
-
-let outsideRouterRef: NextRouter;
+import { useContext, useEffect } from 'react';
+import { UserContext } from '../contexts/user';
 
 const Login: NextPage = () => {
-  let router = useRouter()
-  outsideRouterRef = router;
+  let router = useRouter();
+  const {setUser} = useContext(UserContext);
+  
+  const onLogin = (user: User) => {
+    setUser(user);
+    router.push("/");
+  }
 
   const styles = {
     main: {
@@ -27,7 +32,7 @@ const Login: NextPage = () => {
     <div style={styles.main}>
       <Typography variant='h2' sx={{fontSize: 22}}>Welcome to Langhe</Typography>
       <Typography variant='h2' sx={{fontSize: 18}}>Please log in</Typography>
-      <GoogleLoginButton />
+      <GoogleLoginButton onLogin={onLogin} />
     </div>
   )
 }
@@ -42,8 +47,8 @@ if (typeof window !== 'undefined') {
       localStorage.setItem(JWT_KEY, authResult['credential']);
       api<User>(`/auth/google`, "POST")
         .then(user => {
-          console.log(user);
-          outsideRouterRef.push("/");
+          // @ts-ignore
+          window.GoogleLoginButtonOnLogin(user);
         })
     } else {
       // There was an error.
@@ -52,7 +57,21 @@ if (typeof window !== 'undefined') {
   }
 }
 
-const GoogleLoginButton = () => {
+interface GoogleLoginButtonProps {
+  onLogin: (user: User) => void;
+}
+const GoogleLoginButton = (props: GoogleLoginButtonProps) => {
+
+  useEffect(() => {
+    // set on window so that it can be called from outside
+    // @ts-ignore
+    window.GoogleLoginButtonOnLogin = props.onLogin;
+
+    () => {
+      // @ts-ignore
+      delete window.GoogleLoginButtonOnLogin;
+    }
+  }, []);
   return (
     <div>
       <Script src="https://accounts.google.com/gsi/client" />
