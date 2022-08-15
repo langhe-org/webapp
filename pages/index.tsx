@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { User, Units } from '../types/user'
 import { Greenhouse, GreenhouseType } from '../types/greenhouse'
 import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightningState, lightning_state_display } from '../types/greenhouse-state'
@@ -11,16 +11,17 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Icon, IconButton } from '@mui/material';
 import { api } from '../services/api'
-
+import { UserContext } from '../contexts/user'
 
 const Home: NextPage = () => {
-  const [user, setUser] = useState<User>();
+  const {user, setUser} = useContext(UserContext);
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
 
   useEffect(() => {
-    api<User>("/user/1")
-      .then(user => setUser(user))
+    if(!user)
+      api<User>("/user/1")
+        .then(user => setUser(user))
   }, []);
   useEffect(() => {
     api<Greenhouse>("/greenhouse/2")
