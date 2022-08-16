@@ -9,7 +9,9 @@ import Icon from '@mui/material/Icon'
 import Head from 'next/head'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import InputAdornment from '@mui/material/InputAdornment'
+import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
+import { api } from '../services/api'
+import { useEffect, useState } from 'react'
 
 const styles = {
   main: {
@@ -30,6 +32,13 @@ const styles = {
 };
 
 const Lighting: NextPage = () => {
+  const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+
+  useEffect(() => {
+    api<GreenhouseState>("/greenhouse-state/1")
+      .then(greenhouseState => setGreenhouseState(greenhouseState))
+  }, []);
+
   return (
     <div style={styles.main}>
       <Head>
@@ -51,7 +60,10 @@ const Lighting: NextPage = () => {
       </Typography>
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.control.lighting.mode === ControlMode.Automatic}
+          // onChange={onChange}
+        />}
         label="Auto Mode"
       />
       <FormControl>
@@ -81,7 +93,10 @@ const Lighting: NextPage = () => {
       </Typography>
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.actuator.lights ?? false}
+          // onChange={onChange}
+        />}
         label="LEDs (all)"
       />
     </div>

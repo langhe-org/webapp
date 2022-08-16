@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { User, Units } from '../types/user'
 import { Greenhouse, GreenhouseType } from '../types/greenhouse'
-import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, LightningState, lightning_state_display } from '../types/greenhouse-state'
+import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightningState, lightning_state_display } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -149,9 +149,9 @@ const Home: NextPage = () => {
                   Irrigation
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  ??
+                  {irrigation_state_display(greenhouseState?.control.irrigation.state as IrrigationState | undefined)}
                 </Typography>
-                <Chip label="??" sx={styles.cardChip} />
+                <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
               </CardContent>
             </CardActionArea>
           </Card>
@@ -166,9 +166,9 @@ const Home: NextPage = () => {
                   Pest Control
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  ??
+                  {ipm_state_display(greenhouseState?.control.ipm.state as IpmState | undefined)}
                 </Typography>
-                <Chip label="??" sx={styles.cardChip} />
+                <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
               </CardContent>
             </CardActionArea>
           </Card>

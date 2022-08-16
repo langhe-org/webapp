@@ -10,6 +10,9 @@ import Head from 'next/head'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import InputAdornment from '@mui/material/InputAdornment'
+import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
+import { useEffect, useState } from 'react'
+import { api } from '../services/api'
 
 const styles = {
   main: {
@@ -30,6 +33,13 @@ const styles = {
 };
 
 const Environment: NextPage = () => {
+  const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+
+  useEffect(() => {
+    api<GreenhouseState>("/greenhouse-state/1")
+      .then(greenhouseState => setGreenhouseState(greenhouseState))
+  }, []);
+
   return (
     <div style={styles.main}>
       <Head>
@@ -51,7 +61,10 @@ const Environment: NextPage = () => {
       </Typography>
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.control.environment.mode === ControlMode.Automatic}
+          // onChange={onChange}
+        />}
         label="Auto Mode"
       />
       <FormControl>
@@ -83,17 +96,26 @@ const Environment: NextPage = () => {
       </Typography>
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.actuator.heater ?? false}
+          // onChange={onChange}
+        />}
         label="Heater"
       />
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.actuator.ventilator ?? false}
+          // onChange={onChange}
+        />}
         label="Ventilator"
       />
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.actuator.exhaust ?? false}
+          // onChange={onChange}
+        />}
         label="Exhaust Fan"
       />
     </div>

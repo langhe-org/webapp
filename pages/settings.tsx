@@ -11,6 +11,10 @@ import Icon from '@mui/material/Icon'
 import Head from 'next/head'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
+import { useEffect, useState } from 'react'
+import { api } from '../services/api'
+import { User } from '../types/user'
+import { Greenhouse } from '../types/greenhouse'
 
 const styles = {
   main: {
@@ -28,6 +32,18 @@ const styles = {
 
 
 const Settings: NextPage = () => {
+  const [user, setUser] = useState<User>();
+  const [greenhouse, setGreenhouse] = useState<Greenhouse>();
+
+  useEffect(() => {
+    api<User>("/user/1")
+      .then(user => setUser(user))
+  }, []);
+  useEffect(() => {
+    api<Greenhouse>("/greenhouse/2")
+      .then(greenhouse => setGreenhouse(greenhouse))
+  }, []);
+
   return (
     <div style={styles.main}>
       <Head>
@@ -52,7 +68,7 @@ const Settings: NextPage = () => {
         <InputLabel htmlFor="component-outlined">Name</InputLabel>
         <OutlinedInput
           id="component-outlined"
-          value={"Mendy"}
+          value={user?.name ?? ""}
           // onChange={handleChange}
           label="Name"
         />
@@ -61,7 +77,7 @@ const Settings: NextPage = () => {
         <InputLabel htmlFor="component-outlined">Greenhouse ID</InputLabel>
         <OutlinedInput
           id="component-outlined"
-          value={1}
+          value={greenhouse?.id ?? ""}
           // onChange={handleChange}
           label="Greenhouse ID"
           readOnly={true}
@@ -71,17 +87,17 @@ const Settings: NextPage = () => {
         <InputLabel htmlFor="component-outlined">Location</InputLabel>
         <OutlinedInput
           id="component-outlined"
-          value={"Ithaca, NY"}
+          value={greenhouse?.location_name ?? ""}
           // onChange={handleChange}
           label="Location "
           readOnly={true}
         />
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel htmlFor="component-outlined">Sulfur Level</InputLabel>
+        <InputLabel htmlFor="component-outlined">Units</InputLabel>
         <Select
           labelId="component-outlined"
-          value={"metric"}
+          value={user?.units}
           label="Sulfur Level"
         // onChange={handleChange}
         >
