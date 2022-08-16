@@ -10,6 +10,9 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import { useEffect, useState } from 'react';
+import { ControlMode, GreenhouseState } from '../types/greenhouse-state';
+import { api } from '../services/api';
 
 const styles = {
   main: {
@@ -30,6 +33,13 @@ const styles = {
 };
 
 const PestControl: NextPage = () => {
+  const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+
+  useEffect(() => {
+    api<GreenhouseState>("/greenhouse-state/1")
+      .then(greenhouseState => setGreenhouseState(greenhouseState))
+  }, []);
+
   return (
     <div style={styles.main}>
       <Head>
@@ -51,7 +61,10 @@ const PestControl: NextPage = () => {
       </Typography>
       <FormControlLabel
         value="auto"
-        control={<Switch />}
+        control={<Switch
+          checked={greenhouseState?.control.ipm.mode === ControlMode.Automatic}
+          // onChange={onChange}
+        />}
         label="Auto Mode"
       />
 

@@ -37,6 +37,15 @@ export function lightning_state_display(state?: LightningState) {
     return "";
 }
 
+export enum IrrigationState {
+    Default = "default",
+}
+export function irrigation_state_display(state?: IrrigationState) {
+    if(state === IrrigationState.Default)
+        return "Default";
+    return "";
+}
+
 export interface Sensor {
     temperature: number;
     humidity: number;

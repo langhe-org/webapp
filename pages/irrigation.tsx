@@ -6,6 +6,9 @@ import Icon from '@mui/material/Icon'
 import Head from 'next/head'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
+import { useEffect, useState } from 'react';
+import { api } from '../services/api';
+import { ControlMode, GreenhouseState } from '../types/greenhouse-state';
 
 const styles = {
   main: {
@@ -26,6 +29,13 @@ const styles = {
 };
 
 const Irrigation: NextPage = () => {
+  const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+
+  useEffect(() => {
+    api<GreenhouseState>("/greenhouse-state/1")
+      .then(greenhouseState => setGreenhouseState(greenhouseState))
+  }, []);
+
   return (
     <div style={styles.main}>
       <Head>
@@ -45,30 +55,29 @@ const Irrigation: NextPage = () => {
       <Typography variant='h1' sx={{ fontSize: 60 }}>
         Irrigation
       </Typography>
-
+      <FormControlLabel
+        value="auto"
+        control={<Switch
+          checked={greenhouseState?.control.irrigation.mode === ControlMode.Automatic}
+          // onChange={onChange}
+        />}
+        label="Auto Mode"
+      />
       <Typography variant='h1' sx={styles.manualControlHeader}>
         Manual Control
       </Typography>
-      <FormControlLabel
-        value="auto"
-        control={<Switch />}
-        label="Zone 1"
-      />
-      <FormControlLabel
-        value="auto"
-        control={<Switch />}
-        label="Zone 2"
-      />
-      <FormControlLabel
-        value="auto"
-        control={<Switch />}
-        label="Zone 3"
-      />
-      <FormControlLabel
-        value="auto"
-        control={<Switch />}
-        label="Zone 4"
-      />
+
+      { greenhouseState?.actuator.valves.map((valve, i) => (
+        <FormControlLabel
+          key={i}
+          value="auto"
+          control={<Switch
+            checked={valve}
+            // onChange={onChange}
+          />}
+          label={`Zone ${i + 1}`}
+        />
+      )) }
     </div>
   )
 }
