@@ -25,7 +25,7 @@ const styles = {
   }
 };
 
-const Settings: NextPage = () => {
+const Irrigation: NextPage = () => {
   return (
     <div style={styles.main}>
       <Head>
@@ -73,4 +73,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default Irrigation
