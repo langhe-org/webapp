@@ -29,7 +29,7 @@ const styles = {
   }
 };
 
-const Settings: NextPage = () => {
+const Environment: NextPage = () => {
   return (
     <div style={styles.main}>
       <Head>
@@ -100,4 +100,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default Environment

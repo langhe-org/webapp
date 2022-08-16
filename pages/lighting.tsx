@@ -29,7 +29,7 @@ const styles = {
   }
 };
 
-const Settings: NextPage = () => {
+const Lighting: NextPage = () => {
   return (
     <div style={styles.main}>
       <Head>
@@ -88,4 +88,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default Lighting
