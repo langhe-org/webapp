@@ -20,17 +20,19 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if(!user)
-      api<User>("/user/1")
+      api<User>("/account")
         .then(user => setUser(user))
   }, []);
   useEffect(() => {
-    api<Greenhouse>("/greenhouse/2")
+    if(!user) return;
+    api<Greenhouse>(`/greenhouse/${user.greenhouse_ids[0]}`)
       .then(greenhouse => setGreenhouse(greenhouse))
-  }, []);
+  }, [user]);
   useEffect(() => {
-    api<GreenhouseState>("/greenhouse-state/1")
+    if(!user) return;
+    api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
       .then(greenhouseState => setGreenhouseState(greenhouseState))
-  }, []);
+  }, [user]);
 
   const styles = {
     main: {

@@ -16,4 +16,5 @@ export interface User {
     name?: string;
     email: string;
     units: Units;
+    greenhouse_ids: number[];
 }
