@@ -21,7 +21,7 @@ const Login: NextPage = () => {
 
   const styles = {
     main: {
-      textAlign: "center",
+      textAlign: "center" as const,
       display: "grid",
       height: "100vh",
       alignContent: "baseline",
