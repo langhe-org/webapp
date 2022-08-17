@@ -28,11 +28,11 @@ export function ipm_state_display(state?: IpmState) {
     return "";
 }
 
-export enum LightningState {
+export enum LightingState {
     Default = "default",
 }
-export function lightning_state_display(state?: LightningState) {
-    if(state === LightningState.Default)
+export function lightning_state_display(state?: LightingState) {
+    if(state === LightingState.Default)
         return "Default";
     return "";
 }
@@ -52,16 +52,16 @@ export interface Sensor {
     quantum : number;
 }
 
-export interface Subsystem {
+export interface Subsystem<T> {
     mode: ControlMode;
-    state: LightningState;
+    state: T;
 }
 
 export interface Control {
-    environment: Subsystem;
-    ipm: Subsystem;
-    lighting: Subsystem;
-    irrigation: Subsystem;
+    environment: Subsystem<EnvironmentState>;
+    ipm: Subsystem<IpmState>;
+    lighting: Subsystem<LightingState>;
+    irrigation: Subsystem<IrrigationState>;
 }
 
 export interface Actuator {
