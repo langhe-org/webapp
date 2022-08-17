@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useContext, useEffect, useState } from 'react'
 import { User, Units } from '../types/user'
 import { Greenhouse, GreenhouseType } from '../types/greenhouse'
-import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightningState, lightning_state_display } from '../types/greenhouse-state'
+import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightingState, lightning_state_display } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
