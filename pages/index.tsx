@@ -118,7 +118,7 @@ const Home: NextPage = () => {
                   Environment
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  {environment_state_display(greenhouseState?.control.environment.state as EnvironmentState | undefined)}
+                  {environment_state_display(greenhouseState?.control.environment.state)}
                 </Typography>
                 <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
               </CardContent>
@@ -152,7 +152,7 @@ const Home: NextPage = () => {
                   Irrigation
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  {irrigation_state_display(greenhouseState?.control.irrigation.state as IrrigationState | undefined)}
+                  {irrigation_state_display(greenhouseState?.control.irrigation.state)}
                 </Typography>
                 <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
               </CardContent>
@@ -169,7 +169,7 @@ const Home: NextPage = () => {
                   Pest Control
                 </Typography>
                 <Typography variant='h3' color="text.secondary">
-                  {ipm_state_display(greenhouseState?.control.ipm.state as IpmState | undefined)}
+                  {ipm_state_display(greenhouseState?.control.ipm.state)}
                 </Typography>
                 <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
               </CardContent>
