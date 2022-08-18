@@ -4,9 +4,11 @@ import InputLabel from '@mui/material/InputLabel'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button'
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { api } from '../services/api';
+import { UserContext } from '../contexts/user';
+import { User } from '../types/user';
 
 const styles = {
   form: {
@@ -21,12 +23,17 @@ const styles = {
 
 const LinkGreenhouse: NextPage = () => {
   const router = useRouter();
+  const {user, setUser} = useContext(UserContext);
   const [greenhouseId, setGreenhouseId] = useState<string>("");
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    api(`/account/link-greenhouse/${greenhouseId}`)
+    api(`/account/link-greenhouse/${greenhouseId}`, "POST")
       .then(() => {
+        setUser({
+          ...user,
+          greenhouse_ids: [parseInt(greenhouseId)]
+        } as User);
         router.push("/");
       });
   }
