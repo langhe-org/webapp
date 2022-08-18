@@ -12,11 +12,27 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Icon, IconButton } from '@mui/material';
 import { api } from '../services/api'
 import { UserContext } from '../contexts/user'
+import Dialog from '../components/dialog'
+import Environment from '../components/environment'
+import PestControl from '../components/pest-control'
+import Lighting from '../components/lighting'
+import Irrigation from '../components/irrigation'
+import Settings from '../components/settings'
+
+enum ActivePopup {
+  Settings,
+  Environment,
+  Lighting,
+  Irrigation,
+  PestControl,
+}
 
 const Home: NextPage = () => {
   const {user, setUser} = useContext(UserContext);
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+  const [activePopup, setActivePopup] = useState<ActivePopup>();
+
 
   useEffect(() => {
     if(!user)
@@ -98,85 +114,93 @@ const Home: NextPage = () => {
           <Typography variant='h4' color="inherit">
             Hi, {user?.name}
           </Typography>
-          <Link href="/settings">
-            <IconButton color="inherit">
-              <Icon>settings</Icon>
-            </IconButton>
-          </Link>
+          <IconButton color="inherit" onClick={() => setActivePopup(ActivePopup.Settings)}>
+            <Icon>settings</Icon>
+          </IconButton>
         </CardContent>
       </Card>
       <Card sx={{ ...styles.stateSection }}>
         <CardContent>
         </CardContent>
       </Card>
-      <Link href="/environment">
-        <a>
-          <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkEnvironment }}>
-            <CardActionArea sx={styles.pageLinkAction}>
-              <CardContent sx={ styles.pageLinkContent }>
-                <Typography variant='h6' color="text.secondary">
-                  Environment
-                </Typography>
-                <Typography variant='h3' color="text.secondary">
-                  {environment_state_display(greenhouseState?.control.environment.state)}
-                </Typography>
-                <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </a>
-      </Link>
-      <Link href="/lighting">
-        <a>
-          <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkLighting }}>
-            <CardActionArea sx={styles.pageLinkAction}>
-              <CardContent sx={ styles.pageLinkContent }>
-                <Typography variant='h6' color="text.secondary">
-                  Lighting
-                </Typography>
-                <Typography variant='h3' color="text.secondary">
-                  {lightning_state_display(greenhouseState?.control.lighting.state)}
-                </Typography>
-                <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </a>
-      </Link>
-      <Link href="/irrigation">
-        <a>
-          <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkIrrigation }}>
-            <CardActionArea sx={styles.pageLinkAction}>
-              <CardContent sx={ styles.pageLinkContent }>
-                <Typography variant='h6' color="text.secondary">
-                  Irrigation
-                </Typography>
-                <Typography variant='h3' color="text.secondary">
-                  {irrigation_state_display(greenhouseState?.control.irrigation.state)}
-                </Typography>
-                <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </a>
-      </Link>
-      <Link href="/pest-control">
-        <a>
-          <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkPestControl }}>
-            <CardActionArea sx={styles.pageLinkAction}>
-              <CardContent sx={ styles.pageLinkContent }>
-                <Typography variant='h6' color="text.secondary">
-                  Pest Control
-                </Typography>
-                <Typography variant='h3' color="text.secondary">
-                  {ipm_state_display(greenhouseState?.control.ipm.state)}
-                </Typography>
-                <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </a>
-      </Link>
+      <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkEnvironment }} onClick={() => setActivePopup(ActivePopup.Environment)}>
+        <CardActionArea sx={styles.pageLinkAction}>
+          <CardContent sx={ styles.pageLinkContent }>
+            <Typography variant='h6' color="text.secondary">
+              Environment
+            </Typography>
+            <Typography variant='h3' color="text.secondary">
+              {environment_state_display(greenhouseState?.control.environment.state)}
+            </Typography>
+            <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkLighting }} onClick={() => setActivePopup(ActivePopup.Lighting)}>
+        <CardActionArea sx={styles.pageLinkAction}>
+          <CardContent sx={ styles.pageLinkContent }>
+            <Typography variant='h6' color="text.secondary">
+              Lighting
+            </Typography>
+            <Typography variant='h3' color="text.secondary">
+              {lightning_state_display(greenhouseState?.control.lighting.state)}
+            </Typography>
+            <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkIrrigation }} onClick={() => setActivePopup(ActivePopup.Irrigation)}>
+        <CardActionArea sx={styles.pageLinkAction}>
+          <CardContent sx={ styles.pageLinkContent }>
+            <Typography variant='h6' color="text.secondary">
+              Irrigation
+            </Typography>
+            <Typography variant='h3' color="text.secondary">
+              {irrigation_state_display(greenhouseState?.control.irrigation.state)}
+            </Typography>
+            <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <Card sx={{ ...styles.pageLinkCard, ...styles.pageLinkPestControl }} onClick={() => setActivePopup(ActivePopup.PestControl)}>
+        <CardActionArea sx={styles.pageLinkAction}>
+          <CardContent sx={ styles.pageLinkContent }>
+            <Typography variant='h6' color="text.secondary">
+              Pest Control
+            </Typography>
+            <Typography variant='h3' color="text.secondary">
+              {ipm_state_display(greenhouseState?.control.ipm.state)}
+            </Typography>
+            <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <Settings
+        onClose={() => setActivePopup(undefined)}
+        open={activePopup === ActivePopup.Settings}
+        user={user}
+        greenhouse={greenhouse}
+      />
+      <Environment
+        onClose={() => setActivePopup(undefined)}
+        open={activePopup === ActivePopup.Environment}
+        greenhouseState={greenhouseState}
+      />
+      <Lighting
+        onClose={() => setActivePopup(undefined)}
+        open={activePopup === ActivePopup.Lighting}
+        greenhouseState={greenhouseState}
+      />
+      <Irrigation
+        onClose={() => setActivePopup(undefined)}
+        open={activePopup === ActivePopup.Irrigation}
+        greenhouseState={greenhouseState}
+      />
+      <PestControl
+        onClose={() => setActivePopup(undefined)}
+        open={activePopup === ActivePopup.PestControl}
+        greenhouseState={greenhouseState}
+      />
     </div>
   )
 }
