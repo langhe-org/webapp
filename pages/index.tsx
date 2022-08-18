@@ -94,6 +94,10 @@ const Home: NextPage = () => {
       textAlign: "center",
       display: "grid",
       alignContent: "space-between",
+      height: "100%",
+    },
+    pageLinkH3: {
+      fontSize: 36,
     },
     cardChip: {
       justifySelf: "end"
@@ -129,7 +133,7 @@ const Home: NextPage = () => {
             <Typography variant='h6' color="text.secondary">
               Environment
             </Typography>
-            <Typography variant='h3' color="text.secondary">
+            <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
               {environment_state_display(greenhouseState?.control.environment.state)}
             </Typography>
             <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
@@ -142,7 +146,7 @@ const Home: NextPage = () => {
             <Typography variant='h6' color="text.secondary">
               Lighting
             </Typography>
-            <Typography variant='h3' color="text.secondary">
+            <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
               {lightning_state_display(greenhouseState?.control.lighting.state)}
             </Typography>
             <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
@@ -155,7 +159,7 @@ const Home: NextPage = () => {
             <Typography variant='h6' color="text.secondary">
               Irrigation
             </Typography>
-            <Typography variant='h3' color="text.secondary">
+            <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
               {irrigation_state_display(greenhouseState?.control.irrigation.state)}
             </Typography>
             <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
@@ -168,7 +172,7 @@ const Home: NextPage = () => {
             <Typography variant='h6' color="text.secondary">
               Pest Control
             </Typography>
-            <Typography variant='h3' color="text.secondary">
+            <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
               {ipm_state_display(greenhouseState?.control.ipm.state)}
             </Typography>
             <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
