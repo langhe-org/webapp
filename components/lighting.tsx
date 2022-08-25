@@ -8,6 +8,8 @@ import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
 import Dialog from './dialog'
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
+import Loadable from './loadable';
+import { Command } from '../types/command';
 
 const styles = {
   main: {
@@ -28,8 +30,10 @@ const styles = {
 
 interface Props {
   onClose: () => void;
+  onCommand: (command: Command) => void;
   open: boolean,
   greenhouseState?: GreenhouseState,
+  queuedCommands?: Command,
 }
 
 const Lighting = (props: Props) => {
@@ -77,14 +81,16 @@ const Lighting = (props: Props) => {
         <Typography variant='h1' sx={styles.manualControlHeader}>
           Manual Control
         </Typography>
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.actuator.lights ?? false}
-            // onChange={onChange}
-          />}
-          label="LEDs (all)"
-        />
+        <Loadable isLoading={props.queuedCommands?.lighting?.light !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.actuator.lights ?? false}
+              onChange={e => props.onCommand({lighting: { light: e.target.checked }})}
+            />}
+            label="LEDs (all)"
+          />
+        </Loadable>
       </div>
     </Dialog>
   )

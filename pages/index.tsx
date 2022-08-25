@@ -18,6 +18,7 @@ import PestControl from '../components/pest-control'
 import Lighting from '../components/lighting'
 import Irrigation from '../components/irrigation'
 import Settings from '../components/settings'
+import { Command } from '../types/command'
 
 enum ActivePopup {
   Settings,
@@ -31,8 +32,13 @@ const Home: NextPage = () => {
   const {user, setUser} = useContext(UserContext);
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
+  const [queuedCommands, setQueuedCommands] = useState<Command>();
   const [activePopup, setActivePopup] = useState<ActivePopup>();
 
+  const onCommand = (command: Command) => {
+    setQueuedCommands({...queuedCommands, ...command});
+    api(`/command`, "post", command);
+  }
 
   useEffect(() => {
     if(!user)
@@ -192,8 +198,10 @@ const Home: NextPage = () => {
       />
       <Lighting
         onClose={() => setActivePopup(undefined)}
+        onCommand={onCommand}
         open={activePopup === ActivePopup.Lighting}
         greenhouseState={greenhouseState}
+        queuedCommands={queuedCommands}
       />
       <Irrigation
         onClose={() => setActivePopup(undefined)}
