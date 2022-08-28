@@ -19,8 +19,17 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
                 return res
             }
         })
+        .then(res => {
+            if(res.status < 200 || res.status > 299) {
+                throw new Error(res.statusText);
+            } else {
+                return res;
+            }
+        })
         .then(res => res.json())
         .catch(e => {
+            alert("Error");
             console.error(e);
+            throw e;
         })
 }
