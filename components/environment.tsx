@@ -57,7 +57,7 @@ const Environment = (props: Props) => {
           <OutlinedInput
             sx={{ textAlign: "end" }}
             id="component-outlined"
-            value={20}
+            value={greenhouseState?.recipes.environment.day_temperature}
             // onChange={handleChange}
             type="number"
             label="Day Setpoint"
@@ -69,7 +69,7 @@ const Environment = (props: Props) => {
           <OutlinedInput
             sx={{ textAlign: "end" }}
             id="component-outlined"
-            value={1}
+            value={greenhouseState?.recipes.environment.night_temperature}
             // onChange={handleChange}
             type="number"
             label="Night Setpoint"

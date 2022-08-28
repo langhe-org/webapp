@@ -61,7 +61,7 @@ const Lighting = (props: Props) => {
           <OutlinedInput
             sx={{ textAlign: "end" }}
             id="component-outlined"
-            value={20}
+            value={greenhouseState?.recipes.lighting.start_at}
             // onChange={handleChange}
             type="time"
             label="Morning On"
@@ -72,7 +72,7 @@ const Lighting = (props: Props) => {
           <OutlinedInput
             sx={{ textAlign: "end" }}
             id="component-outlined"
-            value={1}
+            value={greenhouseState?.recipes.lighting.stop_at}
             // onChange={handleChange}
             type="time"
             label="Night Off"
