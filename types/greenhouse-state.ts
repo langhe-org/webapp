@@ -87,12 +87,64 @@ export interface Weather {
     current: WeatherCurrent;
 }
 
+export interface EnvironmentRecipe {
+    day_temperature: number;
+    night_temperature: number;
+    humidity_limit: number;
+}
+
+export enum SulfurIntensity {
+    off = "off",
+    low = "low",
+    medium = "medium",
+    high = "high",
+}
+
+export interface IpmRecipe {
+    intensity: SulfurIntensity
+}
+
+export enum LightingRecipeIntensity {
+    low = "low",
+    medium = "medium",
+    high = "high",
+}
+
+export interface LightingRecipe {
+    start_at: string;
+    stop_at: string;
+    intensity: LightingRecipeIntensity;
+}
+
+export enum IrrigationFrequency {
+    twenty_four_hours = "twenty_four_hours"
+}
+
+export interface IrrigationRecipeZone {
+    start_window: string;
+    stop_window: string;
+    duration: number;
+    frequency: number;
+}
+
+export interface IrrigationRecipe {
+    zones: IrrigationRecipeZone[];
+}
+
+export interface Recipes {
+    environment: EnvironmentRecipe;
+    ipm: IpmRecipe;
+    lighting: LightingRecipe;
+    irrigation: IrrigationRecipe;
+}
+
 export interface GreenhouseState {
     id: number;
     greenhouse_id: number;
     time: Date;
     sensor: Sensor;
     control: Control;
+    recipes: Recipes;
     actuator: Actuator;
     weather?: Weather;
 }
