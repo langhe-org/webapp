@@ -19,6 +19,7 @@ import Lighting from '../components/lighting'
 import Irrigation from '../components/irrigation'
 import Settings from '../components/settings'
 import { Command } from '../types/command'
+import lodash from 'lodash'
 
 enum ActivePopup {
   Settings,
@@ -36,7 +37,8 @@ const Home: NextPage = () => {
   const [activePopup, setActivePopup] = useState<ActivePopup>();
 
   const onCommand = (command: Command) => {
-    setQueuedCommands({...queuedCommands, ...command});
+    let v = lodash.merge(queuedCommands, command);
+    setQueuedCommands({...v});
     api(`/command`, "post", command);
   }
 
