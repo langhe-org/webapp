@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import Loadable from './loadable';
 import { Command } from '../types/command';
+import { localTimeToUtc, utcTimeToLocal } from '../utils/time';
 
 const styles = {
   main: {
@@ -41,57 +42,65 @@ const Lighting = (props: Props) => {
 
   return (
     <Dialog {...props}>
-      <div style={styles.main}>
-        <IconButton sx={styles.backButton} onClick={props.onClose}>
-          <Icon>close</Icon>
-        </IconButton>
-        <Typography variant='h1' sx={{ fontSize: 60 }}>
-          Lighting
-        </Typography>
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.control.lighting.mode === ControlMode.Automatic}
-            // onChange={onChange}
-          />}
-          label="Auto Mode"
-        />
-        <FormControl>
-          <InputLabel shrink htmlFor="component-outlined">Morning On</InputLabel>
-          <OutlinedInput
-            sx={{ textAlign: "end" }}
-            id="component-outlined"
-            value={greenhouseState?.recipes.lighting.start_at}
-            // onChange={handleChange}
-            type="time"
-            label="Morning On"
-          />
-        </FormControl>
-        <FormControl>
-          <InputLabel shrink htmlFor="component-outlined">Night Off</InputLabel>
-          <OutlinedInput
-            sx={{ textAlign: "end" }}
-            id="component-outlined"
-            value={greenhouseState?.recipes.lighting.stop_at}
-            // onChange={handleChange}
-            type="time"
-            label="Night Off"
-          />
-        </FormControl>
-        <Typography variant='h1' sx={styles.manualControlHeader}>
-          Manual Control
-        </Typography>
-        <Loadable isLoading={props.queuedCommands?.lighting?.light !== undefined ?? false}>
-          <FormControlLabel
-            value="auto"
-            control={<Switch
-              checked={greenhouseState?.actuator.lights ?? false}
-              onChange={e => props.onCommand({lighting: { light: e.target.checked }})}
-            />}
-            label="LEDs (all)"
-          />
-        </Loadable>
-      </div>
+      { greenhouseState && (
+        <div style={styles.main}>
+          <IconButton sx={styles.backButton} onClick={props.onClose}>
+            <Icon>close</Icon>
+          </IconButton>
+          <Typography variant='h1' sx={{ fontSize: 60 }}>
+            Lighting
+          </Typography>
+          <Loadable isLoading={props.queuedCommands?.lighting?.mode !== undefined ?? false}>
+            <FormControlLabel
+              value="auto"
+              control={<Switch
+                checked={greenhouseState?.control.lighting.mode === ControlMode.Automatic}
+                onChange={e => props.onCommand({lighting: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+              />}
+              label="Auto Mode"
+            />
+          </Loadable>
+          <Loadable isLoading={props.queuedCommands?.lighting?.recipe?.start_at !== undefined ?? false}>
+            <FormControl>
+              <InputLabel shrink htmlFor="component-outlined">Morning On</InputLabel>
+              <OutlinedInput
+                sx={{ textAlign: "end" }}
+                id="component-outlined"
+                value={utcTimeToLocal(greenhouseState?.recipes.lighting.start_at)}
+                onChange={e => props.onCommand({lighting: { recipe: {start_at: localTimeToUtc(e.target.value)} }})}
+                type="time"
+                label="Morning On"
+              />
+            </FormControl>
+          </Loadable>
+          <Loadable isLoading={props.queuedCommands?.lighting?.recipe?.stop_at !== undefined ?? false}>
+            <FormControl>
+              <InputLabel shrink htmlFor="component-outlined">Night Off</InputLabel>
+              <OutlinedInput
+                sx={{ textAlign: "end" }}
+                id="component-outlined"
+                value={utcTimeToLocal(greenhouseState.recipes.lighting.stop_at)}
+                onChange={e => props.onCommand({lighting: { recipe: {stop_at: localTimeToUtc(e.target.value)} }})}
+                type="time"
+                label="Night Off"
+              />
+            </FormControl>
+          </Loadable>
+          <Typography variant='h1' sx={styles.manualControlHeader}>
+            Manual Control
+          </Typography>
+          <Loadable isLoading={props.queuedCommands?.lighting?.light !== undefined ?? false}>
+            <FormControlLabel
+              value="auto"
+              control={<Switch
+                checked={greenhouseState?.actuator.lights ?? false}
+                onChange={e => props.onCommand({lighting: { light: e.target.checked }})}
+              />}
+              label="LEDs (all)"
+            />
+          </Loadable>
+        </div>
+      ) }
     </Dialog>
   )
 }

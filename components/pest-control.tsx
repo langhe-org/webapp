@@ -9,6 +9,8 @@ import { ControlMode, GreenhouseState, SulfurIntensity } from '../types/greenhou
 import Dialog from './dialog';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
+import { Command } from '../types/command';
+import Loadable from './loadable';
 
 const styles = {
   main: {
@@ -29,8 +31,10 @@ const styles = {
 
 interface Props {
   onClose: () => void;
+  onCommand: (command: Command) => void;
   open: boolean,
   greenhouseState?: GreenhouseState,
+  queuedCommands?: Command,
 }
 
 const PestControl = (props: Props) => {
@@ -45,22 +49,23 @@ const PestControl = (props: Props) => {
         <Typography variant='h1' sx={{ fontSize: 60 }}>
           Pest Control
         </Typography>
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.control.ipm.mode === ControlMode.Automatic}
-            // onChange={onChange}
-          />}
-          label="Auto Mode"
-        />
-
+        <Loadable isLoading={props.queuedCommands?.ipm?.mode !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.control.ipm.mode === ControlMode.Automatic}
+              onChange={e => props.onCommand({ipm: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+            />}
+            label="Auto Mode"
+          />
+        </Loadable>
         <FormControl fullWidth>
           <InputLabel htmlFor="component-outlined">Sulfur Level</InputLabel>
           <Select
             labelId="component-outlined"
             value={greenhouseState?.recipes.ipm.intensity}
             label="Sulfur Level"
-            // onChange={handleChange}
+            // onChange={e => props.onCommand({ipm: { recipe: { intensity: e.target.value } }})}
           >
             <MenuItem value={SulfurIntensity.off}>Off</MenuItem>
             <MenuItem value={SulfurIntensity.low}>Low</MenuItem>

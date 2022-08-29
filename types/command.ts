@@ -39,8 +39,8 @@ export interface LightingCommand {
 export interface IrrigationRecipeZoneCommand {
     start_window?: string;
     stop_window?: string;
-    duration?: string;
-    frequency?: string;
+    duration?: number;
+    frequency?: number;
 }
 
 export interface IrrigationRecipeCommand {
