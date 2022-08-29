@@ -97,6 +97,7 @@ const Environment = (props: Props) => {
               onChange={e => props.onCommand({environment: { heat: e.target.checked }})}
             />}
             label="Heater"
+            disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
           />
         </Loadable>
         <Loadable isLoading={props.queuedCommands?.environment?.vent !== undefined ?? false}>
@@ -107,6 +108,7 @@ const Environment = (props: Props) => {
               onChange={e => props.onCommand({environment: { vent: e.target.checked }})}
             />}
             label="Ventilator"
+            disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
           />
         </Loadable>
         <Loadable isLoading={props.queuedCommands?.environment?.exhaust !== undefined ?? false}>
@@ -117,6 +119,7 @@ const Environment = (props: Props) => {
               onChange={e => props.onCommand({environment: { exhaust: e.target.checked }})}
             />}
             label="Exhaust Fan"
+            disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
           />
         </Loadable>
       </div>
