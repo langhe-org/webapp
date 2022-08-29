@@ -8,7 +8,8 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
         method,
         body: JSON.stringify(data),
         headers: {
-            authorization: "Bearer " + localStorage.getItem(JWT_KEY),
+            "authorization": "Bearer " + localStorage.getItem(JWT_KEY),
+            "content-type": "application/json",
         }
     })
         .then(res => {
