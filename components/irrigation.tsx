@@ -9,7 +9,9 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
-import { utcTimeToLocal } from '../utils/time';
+import { localTimeToUtc, utcTimeToLocal } from '../utils/time';
+import { Command, IrrigationRecipeZoneCommand } from '../types/command';
+import Loadable from './loadable';
 
 const styles = {
   main: {
@@ -30,8 +32,10 @@ const styles = {
 
 interface Props {
   onClose: () => void;
+  onCommand: (command: Command) => void;
   open: boolean,
   greenhouseState?: GreenhouseState,
+  queuedCommands?: Command,
 }
 
 const Irrigation = (props: Props) => {
@@ -50,7 +54,7 @@ const Irrigation = (props: Props) => {
           value="auto"
           control={<Switch
             checked={greenhouseState?.control.irrigation.mode === ControlMode.Automatic}
-            // onChange={onChange}
+            onChange={e => props.onCommand({irrigation: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
           />}
           label="Auto Mode"
         />
@@ -60,54 +64,81 @@ const Irrigation = (props: Props) => {
               <Typography variant='h5'>
                 Irrigation Window
               </Typography>
-              <TextField
-                type="time"
-                label="From"
-                value={utcTimeToLocal(zone.start_window)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <TextField
-                type="time"
-                label="To"
-                value={utcTimeToLocal(zone.stop_window)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+              <Loadable isLoading={props.queuedCommands?.irrigation?.recipe?.zones?.[i].start_window !== undefined ?? false}>
+                <TextField
+                  type="time"
+                  label="From"
+                  value={utcTimeToLocal(zone.start_window)}
+                  onChange={e => {
+                    const zones: IrrigationRecipeZoneCommand[] = [];
+                    zones[i] = { start_window: localTimeToUtc(e.target.value) };
+                    props.onCommand({irrigation: { recipe: { zones } }})
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Loadable>
+              <Loadable isLoading={props.queuedCommands?.irrigation?.recipe?.zones?.[i].stop_window !== undefined ?? false}>
+                <TextField
+                  type="time"
+                  label="To"
+                  value={utcTimeToLocal(zone.stop_window)}
+                  onChange={e => {
+                    const zones: IrrigationRecipeZoneCommand[] = [];
+                    zones[i] = { stop_window: localTimeToUtc(e.target.value) };
+                    props.onCommand({irrigation: { recipe: { zones } }})
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Loadable>
             </Stack>
             <Stack direction="row" spacing={2}>
               <Typography variant='h5'>
 
               </Typography>
-              <TextField
-                type="number"
-                label="Duration"
-                value={zone.duration}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      Seconds
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                select
-                label="Frequency"
-                value={zone.frequency}
-                fullWidth
-                // onChange={handleChange}
-              >
-                <MenuItem value={6 * 60 * 60}>6 Hours</MenuItem>
-                <MenuItem value={12 * 60 * 60}>12 Hours</MenuItem>
-                <MenuItem value={24 * 60 * 60}>24 Hours</MenuItem>
-                <MenuItem value={48 * 60 * 60}>48 Hours</MenuItem>
-              </TextField>
+              <Loadable isLoading={props.queuedCommands?.irrigation?.recipe?.zones?.[i].duration !== undefined ?? false}>
+                <TextField
+                  type="number"
+                  label="Duration"
+                  value={zone.duration}
+                  onChange={e => {
+                    const zones: IrrigationRecipeZoneCommand[] = [];
+                    zones[i] = { duration: parseInt(e.target.value) };
+                    props.onCommand({irrigation: { recipe: { zones } }})
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        Seconds
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Loadable>
+              <Loadable isLoading={props.queuedCommands?.irrigation?.recipe?.zones?.[i].frequency !== undefined ?? false}>
+                <TextField
+                  select
+                  label="Frequency"
+                  value={zone.frequency}
+                  onChange={e => {
+                    const zones: IrrigationRecipeZoneCommand[] = [];
+                    zones[i] = { frequency: parseInt(e.target.value) };
+                    props.onCommand({irrigation: { recipe: { zones } }})
+                  }}
+                  fullWidth
+                >
+                  <MenuItem value={6 * 60 * 60}>6 Hours</MenuItem>
+                  <MenuItem value={12 * 60 * 60}>12 Hours</MenuItem>
+                  <MenuItem value={24 * 60 * 60}>24 Hours</MenuItem>
+                  <MenuItem value={48 * 60 * 60}>48 Hours</MenuItem>
+                </TextField>
+              </Loadable>
             </Stack>
           </Stack>
         ))}
@@ -117,15 +148,21 @@ const Irrigation = (props: Props) => {
         </Typography>
 
         { greenhouseState?.actuator.valves.map((valve, i) => (
-          <FormControlLabel
-            key={i}
-            value="auto"
-            control={<Switch
-              checked={valve}
-              // onChange={onChange}
-            />}
-            label={`Zone ${i + 1}`}
-          />
+          <Loadable isLoading={false}>
+            <FormControlLabel
+              key={i}
+              value="auto"
+              control={<Switch
+                checked={valve}
+                onChange={e => {
+                  // if(e.target.checked) {
+                  //   props.onCommand({irrigation: { trigger_valve: i }})
+                  // }
+                }}
+              />}
+              label={`Zone ${i + 1}`}
+            />
+          </Loadable>
         )) }
       </div>
     </Dialog>

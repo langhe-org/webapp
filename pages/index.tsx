@@ -193,8 +193,10 @@ const Home: NextPage = () => {
       />
       <Environment
         onClose={() => setActivePopup(undefined)}
+        onCommand={onCommand}
         open={activePopup === ActivePopup.Environment}
         greenhouseState={greenhouseState}
+        queuedCommands={queuedCommands}
       />
       <Lighting
         onClose={() => setActivePopup(undefined)}
@@ -205,13 +207,17 @@ const Home: NextPage = () => {
       />
       <Irrigation
         onClose={() => setActivePopup(undefined)}
+        onCommand={onCommand}
         open={activePopup === ActivePopup.Irrigation}
         greenhouseState={greenhouseState}
+        queuedCommands={queuedCommands}
       />
       <PestControl
         onClose={() => setActivePopup(undefined)}
+        onCommand={onCommand}
         open={activePopup === ActivePopup.PestControl}
         greenhouseState={greenhouseState}
+        queuedCommands={queuedCommands}
       />
     </div>
   )

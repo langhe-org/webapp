@@ -9,6 +9,8 @@ import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
 import Dialog from './dialog'
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
+import { Command } from '../types/command';
+import Loadable from './loadable';
 
 const styles = {
   main: {
@@ -29,8 +31,10 @@ const styles = {
 
 interface Props {
   onClose: () => void;
+  onCommand: (command: Command) => void;
   open: boolean,
   greenhouseState?: GreenhouseState,
+  queuedCommands?: Command,
 }
 
 const Environment = (props: Props) => {
@@ -44,65 +48,77 @@ const Environment = (props: Props) => {
         <Typography variant='h1' sx={{ fontSize: 60 }}>
           Environment
         </Typography>
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.control.environment.mode === ControlMode.Automatic}
-            // onChange={onChange}
-          />}
-          label="Auto Mode"
-        />
-        <FormControl>
-          <InputLabel htmlFor="component-outlined">Day Setpoint</InputLabel>
-          <OutlinedInput
-            sx={{ textAlign: "end" }}
-            id="component-outlined"
-            value={greenhouseState?.recipes.environment.day_temperature}
-            // onChange={handleChange}
-            type="number"
-            label="Day Setpoint"
-            endAdornment={<InputAdornment position="start">°C</InputAdornment>}
+        <Loadable isLoading={props.queuedCommands?.environment?.mode !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.control.environment.mode === ControlMode.Automatic}
+              onChange={e => props.onCommand({environment: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+            />}
+            label="Auto Mode"
           />
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="component-outlined">Night Setpoint</InputLabel>
-          <OutlinedInput
-            sx={{ textAlign: "end" }}
-            id="component-outlined"
-            value={greenhouseState?.recipes.environment.night_temperature}
-            // onChange={handleChange}
-            type="number"
-            label="Night Setpoint"
-            endAdornment={<InputAdornment position="start">°C</InputAdornment>}
-          />
-        </FormControl>
+        </Loadable>
+        <Loadable isLoading={props.queuedCommands?.environment?.recipe?.day_temperature !== undefined ?? false}>
+          <FormControl>
+            <InputLabel htmlFor="component-outlined">Day Setpoint</InputLabel>
+            <OutlinedInput
+              sx={{ textAlign: "end" }}
+              id="component-outlined"
+              value={greenhouseState?.recipes.environment.day_temperature}
+              onChange={e => props.onCommand({environment: { recipe: { day_temperature: parseInt(e.target.value) }}})}
+              type="number"
+              label="Day Setpoint"
+              endAdornment={<InputAdornment position="start">°C</InputAdornment>}
+            />
+          </FormControl>
+        </Loadable>
+        <Loadable isLoading={props.queuedCommands?.environment?.recipe?.night_temperature !== undefined ?? false}>
+          <FormControl>
+            <InputLabel htmlFor="component-outlined">Night Setpoint</InputLabel>
+            <OutlinedInput
+              sx={{ textAlign: "end" }}
+              id="component-outlined"
+              value={greenhouseState?.recipes.environment.night_temperature}
+              onChange={e => props.onCommand({environment: { recipe: { night_temperature: parseInt(e.target.value) }}})}
+              type="number"
+              label="Night Setpoint"
+              endAdornment={<InputAdornment position="start">°C</InputAdornment>}
+            />
+          </FormControl>
+        </Loadable>
         <Typography variant='h1' sx={styles.manualControlHeader}>
           Manual Control
         </Typography>
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.actuator.heater ?? false}
-            // onChange={onChange}
-          />}
-          label="Heater"
-        />
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.actuator.ventilator ?? false}
-            // onChange={onChange}
-          />}
-          label="Ventilator"
-        />
-        <FormControlLabel
-          value="auto"
-          control={<Switch
-            checked={greenhouseState?.actuator.exhaust ?? false}
-            // onChange={onChange}
-          />}
-          label="Exhaust Fan"
-        />
+        <Loadable isLoading={props.queuedCommands?.environment?.heat !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.actuator.heater ?? false}
+              onChange={e => props.onCommand({environment: { heat: e.target.checked }})}
+            />}
+            label="Heater"
+          />
+        </Loadable>
+        <Loadable isLoading={props.queuedCommands?.environment?.vent !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.actuator.ventilator ?? false}
+              onChange={e => props.onCommand({environment: { vent: e.target.checked }})}
+            />}
+            label="Ventilator"
+          />
+        </Loadable>
+        <Loadable isLoading={props.queuedCommands?.environment?.exhaust !== undefined ?? false}>
+          <FormControlLabel
+            value="auto"
+            control={<Switch
+              checked={greenhouseState?.actuator.exhaust ?? false}
+              onChange={e => props.onCommand({environment: { exhaust: e.target.checked }})}
+            />}
+            label="Exhaust Fan"
+          />
+        </Loadable>
       </div>
     </Dialog>
   )
