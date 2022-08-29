@@ -96,6 +96,7 @@ const Lighting = (props: Props) => {
                 checked={greenhouseState?.actuator.lights ?? false}
                 onChange={e => props.onCommand({lighting: { light: e.target.checked }})}
               />}
+              disabled={greenhouseState?.control.lighting.mode !== ControlMode.Manual}
               label="LEDs (all)"
             />
           </Loadable>

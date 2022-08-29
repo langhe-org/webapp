@@ -160,6 +160,7 @@ const Irrigation = (props: Props) => {
                   // }
                 }}
               />}
+              disabled={greenhouseState?.control.irrigation.mode !== ControlMode.Manual}
               label={`Zone ${i + 1}`}
             />
           </Loadable>
