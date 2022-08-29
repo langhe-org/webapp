@@ -37,9 +37,10 @@ const Home: NextPage = () => {
   const [activePopup, setActivePopup] = useState<ActivePopup>();
 
   const onCommand = (command: Command) => {
+    if(!user) return;
     let v = lodash.merge(queuedCommands, command);
     setQueuedCommands({...v});
-    api(`/command`, "post", command);
+    api(`/greenhouse-command/${user.greenhouse_ids[0]}`, "post", command);
   }
 
   useEffect(() => {
