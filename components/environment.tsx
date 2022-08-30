@@ -89,23 +89,23 @@ const Environment = (props: Props) => {
         <Typography variant='h1' sx={styles.manualControlHeader}>
           Manual Control
         </Typography>
-        <Loadable isLoading={props.queuedCommands?.environment?.heat !== undefined ?? false}>
+        <Loadable isLoading={props.queuedCommands?.environment?.heater !== undefined ?? false}>
           <FormControlLabel
             value="auto"
             control={<Switch
               checked={greenhouseState?.actuator.heater ?? false}
-              onChange={e => props.onCommand({environment: { heat: e.target.checked }})}
+              onChange={e => props.onCommand({environment: { heater: e.target.checked }})}
             />}
             label="Heater"
             disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
           />
         </Loadable>
-        <Loadable isLoading={props.queuedCommands?.environment?.vent !== undefined ?? false}>
+        <Loadable isLoading={props.queuedCommands?.environment?.ventilator !== undefined ?? false}>
           <FormControlLabel
             value="auto"
             control={<Switch
               checked={greenhouseState?.actuator.ventilator ?? false}
-              onChange={e => props.onCommand({environment: { vent: e.target.checked }})}
+              onChange={e => props.onCommand({environment: { ventilator: e.target.checked }})}
             />}
             label="Ventilator"
             disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
