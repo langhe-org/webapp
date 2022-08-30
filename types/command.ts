@@ -1,4 +1,4 @@
-import { ControlMode } from "./greenhouse-state";
+import { ControlMode, LightingRecipeIntensity, SulfurIntensity } from "./greenhouse-state";
 
 export interface EnvironmentRecipeCommand {
     day_temperature?: number;
@@ -9,13 +9,13 @@ export interface EnvironmentRecipeCommand {
 export interface EnvironmentCommand {
     mode?: ControlMode;
     exhaust?: boolean;
-    heat?: boolean;
-    vent?: boolean;
+    heater?: boolean;
+    ventilator?: boolean;
     recipe?: EnvironmentRecipeCommand;
 }
 
 export interface IpmRecipeCommand {
-    intensity?: number; // should be enum (hight, medium, high)?
+    intensity?: SulfurIntensity;
 }
 
 export interface IpmCommand {
@@ -27,7 +27,7 @@ export interface IpmCommand {
 export interface LightingRecipeCommand {
     start_at?: string;
     stop_at?: string;
-    intensity?: number; // should be enum (hight, medium, high)?
+    intensity?: LightingRecipeIntensity;
 }
 
 export interface LightingCommand {
@@ -36,21 +36,17 @@ export interface LightingCommand {
     recipe?: LightingRecipeCommand;
 }
 
-export interface IrrigationRecipeZoneCommand {
+export interface IrrigationRecipeCommand {
     start_window?: string;
     stop_window?: string;
     duration?: number;
     frequency?: number;
 }
 
-export interface IrrigationRecipeCommand {
-    zones?: IrrigationRecipeZoneCommand[];
-}
-
 export interface IrrigationCommand {
     mode?: ControlMode;
-    trigger_valve?: number;
-    recipe?: IrrigationRecipeCommand;
+    trigger_valve?: (true | undefined)[];
+    recipes?: (IrrigationRecipeCommand | undefined)[];
 }
 
 export interface Command {
