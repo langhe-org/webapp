@@ -148,9 +148,8 @@ const Irrigation = (props: Props) => {
         </Typography>
 
         { greenhouseState?.actuator.valves.map((valve, i) => (
-          <Loadable isLoading={false}>
+          <Loadable isLoading={false} key={i}>
             <FormControlLabel
-              key={i}
               value="auto"
               control={<Switch
                 checked={valve}
