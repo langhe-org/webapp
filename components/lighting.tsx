@@ -55,7 +55,7 @@ const Lighting = (props: Props) => {
               value="auto"
               control={<Switch
                 checked={greenhouseState?.control.lighting.mode === ControlMode.Automatic}
-                onChange={e => props.onCommand({lighting: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+                onChange={e => props.onCommand({lighting: { mode: e.target.checked ? ControlMode.Automatic : ControlMode.Manual }})}
               />}
               label="Auto Mode"
             />
