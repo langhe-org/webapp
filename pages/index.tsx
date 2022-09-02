@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
 import Link from 'next/link'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { User, Units } from '../types/user'
 import { Greenhouse, GreenhouseType } from '../types/greenhouse'
 import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightingState, lightning_state_display } from '../types/greenhouse-state'
@@ -21,6 +21,8 @@ import Settings from '../components/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
 
+const PING_INTERVAL_MILLIS = 3 * 1000;
+
 enum ActivePopup {
   Settings,
   Environment,
@@ -33,16 +35,33 @@ const Home: NextPage = () => {
   const {user, setUser} = useContext(UserContext);
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
-  const [queuedCommands, setQueuedCommands] = useState<Command>();
+  const [queuedCommands, setQueuedCommands] = useState<Command>({});
+  const queuedCommandsRef = useRef(queuedCommands);
   const [activePopup, setActivePopup] = useState<ActivePopup>();
 
   const onCommand = (command: Command) => {
     if(!user) return;
-    let v = lodash.merge(queuedCommands, command);
+    let v = lodash.merge(queuedCommandsRef.current, command);
     setQueuedCommands({...v});
     api(`/greenhouse-command/${user.greenhouse_ids[0]}`, "post", command);
   }
 
+  const getGreenhouseState = () => {
+    if(!user) return;
+    api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
+      .then(greenhouseState => {
+        setGreenhouseState(greenhouseState)
+        let commands = removeResolvedCommands(queuedCommandsRef.current, greenhouseState);
+        setQueuedCommands(commands);
+      })
+      .finally(() => {
+        setTimeout(getGreenhouseState, PING_INTERVAL_MILLIS)
+      })
+  }
+
+  useEffect(() => {
+    getGreenhouseState();
+  }, [user]);
   useEffect(() => {
     if(!user)
       api<User>("/account")
@@ -51,12 +70,10 @@ const Home: NextPage = () => {
   useEffect(() => {
     if(!user) return;
     api<Greenhouse>(`/greenhouse/${user.greenhouse_ids[0]}`)
-      .then(greenhouse => setGreenhouse(greenhouse))
-  }, [user]);
-  useEffect(() => {
-    if(!user) return;
-    api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
-      .then(greenhouseState => setGreenhouseState(greenhouseState))
+      .then(greenhouse => {
+        setGreenhouse(greenhouse)
+        setTimeout(() => console.log("after setting greenhouse and timeoute: ", greenhouse), 100)
+      })
   }, [user]);
 
   const styles = {
@@ -227,3 +244,56 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+function removeResolvedCommands(command: Command, greenhouseState: GreenhouseState): Command {
+  command = structuredClone(command);
+
+  if(command?.environment?.mode === greenhouseState.control.environment.mode)
+    delete command.environment.mode;
+
+  if(command?.environment?.recipe?.day_temperature === greenhouseState.recipes.environment.day_temperature)
+    delete command.environment.recipe?.day_temperature;
+  if(command?.environment?.recipe?.night_temperature === greenhouseState.recipes.environment.night_temperature)
+    delete command.environment.recipe?.night_temperature;
+  if(command?.environment?.recipe?.humidity_limit === greenhouseState.recipes.environment.humidity_limit)
+    delete command.environment.recipe?.humidity_limit;
+
+  if(command?.environment?.heater === greenhouseState.actuator.heater)
+    delete command.environment.heater;
+  if(command?.environment?.ventilator === greenhouseState.actuator.ventilator)
+    delete command.environment.ventilator;
+  if(command?.environment?.exhaust === greenhouseState.actuator.exhaust)
+    delete command.environment.exhaust;
+
+
+  if(command?.ipm?.mode === greenhouseState.control.ipm.mode)
+    delete command.ipm.mode;
+
+  if(command?.ipm?.recipe?.intensity === greenhouseState.recipes.ipm.intensity)
+    delete command.ipm.recipe.intensity;
+
+  if(command?.ipm?.sulfur === greenhouseState.actuator.sulfur)
+    delete command.ipm.sulfur;
+
+
+  if(command?.lighting?.mode === greenhouseState.control.lighting.mode)
+    delete command.lighting.mode;
+
+  if(command?.lighting?.recipe?.start_at === greenhouseState.recipes.lighting.start_at)
+    delete command.lighting.recipe.start_at;
+  if(command?.lighting?.recipe?.stop_at === greenhouseState.recipes.lighting.stop_at)
+    delete command.lighting.recipe.stop_at;
+  if(command?.lighting?.recipe?.intensity === greenhouseState.recipes.lighting.intensity)
+    delete command.lighting.recipe.intensity;
+
+  if(command?.lighting?.light === greenhouseState.actuator.lights)
+    delete command.lighting.light;
+
+
+  if(command?.irrigation?.mode === greenhouseState.control.irrigation.mode)
+    delete command.irrigation.mode;
+
+  // TODO: irrigation
+
+  return command;
+}
