@@ -54,7 +54,7 @@ const PestControl = (props: Props) => {
             value="auto"
             control={<Switch
               checked={greenhouseState?.control.ipm.mode === ControlMode.Automatic}
-              onChange={e => props.onCommand({ipm: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+              onChange={e => props.onCommand({ipm: { mode: e.target.checked ? ControlMode.Automatic : ControlMode.Manual }})}
             />}
             label="Auto Mode"
           />

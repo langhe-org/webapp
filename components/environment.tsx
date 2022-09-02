@@ -53,7 +53,7 @@ const Environment = (props: Props) => {
             value="auto"
             control={<Switch
               checked={greenhouseState?.control.environment.mode === ControlMode.Automatic}
-              onChange={e => props.onCommand({environment: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+              onChange={e => props.onCommand({environment: { mode: e.target.checked ? ControlMode.Automatic : ControlMode.Manual }})}
             />}
             label="Auto Mode"
           />
