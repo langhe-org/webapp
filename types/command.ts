@@ -37,10 +37,15 @@ export interface LightingCommand {
 }
 
 export interface IrrigationRecipeCommand {
-    start_window?: string;
-    stop_window?: string;
+    time?: string;
     duration?: number;
-    frequency?: number;
+    sunday?: boolean;
+    monday?: boolean;
+    tuesday?: boolean;
+    wednesday?: boolean;
+    thursday?: boolean;
+    friday?: boolean;
+    saturday?: boolean;
 }
 
 export interface IrrigationCommand {
