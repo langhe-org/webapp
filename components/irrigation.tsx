@@ -61,17 +61,14 @@ const Irrigation = (props: Props) => {
         {greenhouseState?.recipes.irrigation.zones.map((zone, i) => (
           <Stack key={i} spacing={2}>
             <Stack direction="row" spacing={2}>
-              <Typography variant='h5'>
-                Irrigation Window
-              </Typography>
-              <Loadable isLoading={props.queuedCommands?.irrigation?.recipes?.[i]?.start_window !== undefined ?? false}>
+              <Loadable isLoading={props.queuedCommands?.irrigation?.recipes?.[i]?.time !== undefined ?? false}>
                 <TextField
                   type="time"
-                  label="From"
-                  value={utcTimeToLocal(zone.start_window)}
+                  label="Start time"
+                  value={utcTimeToLocal(zone.time)}
                   onChange={e => {
                     const recipes: IrrigationRecipeCommand[] = [];
-                    recipes[i] = { start_window: localTimeToUtc(e.target.value) };
+                    recipes[i] = { time: localTimeToUtc(e.target.value) };
                     props.onCommand({irrigation: { recipes }})
                   }}
                   InputLabelProps={{
@@ -79,26 +76,6 @@ const Irrigation = (props: Props) => {
                   }}
                 />
               </Loadable>
-              <Loadable isLoading={props.queuedCommands?.irrigation?.recipes?.[i]?.stop_window !== undefined ?? false}>
-                <TextField
-                  type="time"
-                  label="To"
-                  value={utcTimeToLocal(zone.stop_window)}
-                  onChange={e => {
-                    const recipes: IrrigationRecipeCommand[] = [];
-                    recipes[i] = { stop_window: localTimeToUtc(e.target.value) };
-                    props.onCommand({irrigation: { recipes }})
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Loadable>
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <Typography variant='h5'>
-
-              </Typography>
               <Loadable isLoading={props.queuedCommands?.irrigation?.recipes?.[i]?.duration !== undefined ?? false}>
                 <TextField
                   type="number"
@@ -120,24 +97,6 @@ const Irrigation = (props: Props) => {
                     ),
                   }}
                 />
-              </Loadable>
-              <Loadable isLoading={props.queuedCommands?.irrigation?.recipes?.[i]?.frequency !== undefined ?? false}>
-                <TextField
-                  select
-                  label="Frequency"
-                  value={zone.frequency}
-                  onChange={e => {
-                    const recipes: IrrigationRecipeCommand[] = [];
-                    recipes[i] = { frequency: parseInt(e.target.value) };
-                    props.onCommand({irrigation: { recipes }})
-                  }}
-                  fullWidth
-                >
-                  <MenuItem value={6 * 60 * 60}>6 Hours</MenuItem>
-                  <MenuItem value={12 * 60 * 60}>12 Hours</MenuItem>
-                  <MenuItem value={24 * 60 * 60}>24 Hours</MenuItem>
-                  <MenuItem value={48 * 60 * 60}>48 Hours</MenuItem>
-                </TextField>
               </Loadable>
             </Stack>
           </Stack>
