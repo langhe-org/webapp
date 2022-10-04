@@ -1,0 +1,39 @@
+.main {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+}
+.zoneName {
+    font-size: 16px;
+}
+.days {
+    display: flex;
+    gap: 7px;
+}
+.day {
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+    color: gray;
+}
+.day.activeDay {
+    color: #000000;
+}
+.day .circle {
+    font-size: 4px;
+    display: none;
+}
+.day.activeDay .circle {
+    display: inline;
+}
+.label {
+    font-size: 12px;
+}
+.value {
+    font-size: 16px;
+}
+.duration {
+    text-align: right;
+}

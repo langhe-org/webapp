@@ -50,7 +50,7 @@ export interface IrrigationRecipeCommand {
 
 export interface IrrigationCommand {
     mode?: ControlMode;
-    trigger_valve?: (true | undefined)[];
+    trigger_valve?: (boolean | undefined)[];
     recipes?: (IrrigationRecipeCommand | undefined)[];
 }
 
