@@ -1,0 +1,15 @@
+.main {
+    display: grid;
+    text-align: center;
+    row-gap: 22px;
+}
+.switchContainer {
+    display: flex;
+    justify-content: space-between;
+}
+.modeLabel {
+
+}
+.zoneSwitchLabel {
+
+}

@@ -1,22 +1,20 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
-import Link from 'next/link'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { User, Units } from '../types/user'
-import { Greenhouse, GreenhouseType } from '../types/greenhouse'
-import { ControlMode, control_mode_display, EnvironmentState, environment_state_display, GreenhouseState, IpmState, ipm_state_display, IrrigationState, irrigation_state_display, LightingState, lightning_state_display } from '../types/greenhouse-state'
+import { User } from '../types/user'
+import { Greenhouse } from '../types/greenhouse'
+import { control_mode_display, environment_state_display, GreenhouseState, ipm_state_display, irrigation_state_display, lightning_state_display } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, CardMedia, Chip, createTheme, Icon, IconButton, ThemeProvider } from '@mui/material';
+import { CardActionArea, Chip, createTheme, Icon, IconButton, ThemeProvider } from '@mui/material';
 import { api } from '../services/api'
 import { UserContext } from '../contexts/user'
-import Dialog from '../components/dialog'
 import Environment from '../components/environment'
 import PestControl from '../components/pest-control'
 import Lighting from '../components/lighting'
-import Irrigation from '../components/irrigation'
+import Irrigation from '../components/irrigation/irrigation'
 import Settings from '../components/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
@@ -265,6 +263,7 @@ const theme = createTheme({
 });
 
 function removeResolvedCommands(command: Command, greenhouseState: GreenhouseState): Command {
+  // this function can really use unit tests
   command = structuredClone(command);
 
   if(command?.environment?.mode === greenhouseState.control.environment.mode)
@@ -276,6 +275,8 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
     delete command.environment.recipe?.night_temperature;
   if(command?.environment?.recipe?.humidity_limit === greenhouseState.recipes.environment.humidity_limit)
     delete command.environment.recipe?.humidity_limit;
+  if(command?.environment?.recipe && lodash.isEmpty(command.environment.recipe))
+    delete command.environment.recipe;
 
   if(command?.environment?.heater === greenhouseState.actuator.heater)
     delete command.environment.heater;
@@ -284,15 +285,23 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
   if(command?.environment?.exhaust === greenhouseState.actuator.exhaust)
     delete command.environment.exhaust;
 
+  if(command?.environment && lodash.isEmpty(command.environment))
+    delete command.environment;
+
 
   if(command?.ipm?.mode === greenhouseState.control.ipm.mode)
     delete command.ipm.mode;
 
   if(command?.ipm?.recipe?.intensity === greenhouseState.recipes.ipm.intensity)
     delete command.ipm.recipe.intensity;
+  if(command?.ipm?.recipe && lodash.isEmpty(command.ipm.recipe))
+    delete command.ipm.recipe;
 
   if(command?.ipm?.sulfur === greenhouseState.actuator.sulfur)
     delete command.ipm.sulfur;
+
+  if(command?.ipm && lodash.isEmpty(command.ipm))
+    delete command.ipm;
 
 
   if(command?.lighting?.mode === greenhouseState.control.lighting.mode)
@@ -304,15 +313,23 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
     delete command.lighting.recipe.stop_at;
   if(command?.lighting?.recipe?.intensity === greenhouseState.recipes.lighting.intensity)
     delete command.lighting.recipe.intensity;
+  if(command?.lighting?.recipe && lodash.isEmpty(command.lighting.recipe))
+    delete command.lighting.recipe;
 
   if(command?.lighting?.light === greenhouseState.actuator.lights)
     delete command.lighting.light;
+
+  if(command?.lighting && lodash.isEmpty(command.lighting))
+    delete command.lighting;
 
 
   if(command?.irrigation?.mode === greenhouseState.control.irrigation.mode)
     delete command.irrigation.mode;
 
   // TODO: irrigation
+
+  if(command?.irrigation && lodash.isEmpty(command.irrigation))
+    delete command.irrigation;
 
   return command;
 }
