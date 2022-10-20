@@ -67,19 +67,9 @@ const Irrigation = (props: Props) => {
           </div>
         )) }
 
-        { editingZone !== undefined && (
+        { props.greenhouseState !== undefined && editingZone !== undefined && (
           <EditDay
-            recipeZone={{
-              time: "00:03:40",
-              duration: 360,
-              sunday: false,
-              monday: true,
-              tuesday: false,
-              wednesday: false,
-              thursday: false,
-              friday: true,
-              saturday: false,
-            }}
+            recipeZone={{...props.greenhouseState.recipes.irrigation.zones[editingZone]}}
             onClose={() => {
               setEditingZone(undefined);
             }}
