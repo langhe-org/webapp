@@ -64,9 +64,9 @@ const EditDay = (props: Props) => {
           >MON</ToggleButton>
           <ToggleButton
             value="tue"
-            selected={zone.thursday}
+            selected={zone.tuesday}
             onClick={() => {
-              setZone({...zone, thursday: !zone.thursday});
+              setZone({...zone, tuesday: !zone.tuesday});
             }}
           >TUE</ToggleButton>
           <ToggleButton
