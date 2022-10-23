@@ -10,40 +10,35 @@ export function control_mode_display(mode?: ControlMode) {
     return "";
 }
 
-export enum EnvironmentState {
-    Default = "default",
-}
-export function environment_state_display(state?: EnvironmentState) {
-    if(state === EnvironmentState.Default)
-        return "Default";
-    return "";
+export interface EnvironmentControl {
+    mode: ControlMode;
 }
 
-export enum IpmState {
-    Default = "default",
-}
-export function ipm_state_display(state?: IpmState) {
-    if(state === IpmState.Default)
-        return "Default";
-    return "";
+export interface IpmControl {
+    mode: ControlMode;
 }
 
-export enum LightingState {
-    Default = "default",
-}
-export function lightning_state_display(state?: LightingState) {
-    if(state === LightingState.Default)
-        return "Default";
-    return "";
+export interface IrrigationControl {
+    mode: ControlMode;
 }
 
-export enum IrrigationState {
-    Default = "default",
+export interface LightingControl {
+    mode: ControlMode;
 }
-export function irrigation_state_display(state?: IrrigationState) {
-    if(state === IrrigationState.Default)
-        return "Default";
-    return "";
+
+export interface EnvironmentStatus {}
+
+export interface IpmStatus {
+    next_time?: string;
+}
+
+export interface LightingStatus {
+    dli?: number;
+}
+
+class IrrigationStatus {
+    next_time?: string;
+    next_zone?: number;
 }
 
 export interface Sensor {
@@ -52,16 +47,18 @@ export interface Sensor {
     quantum : number;
 }
 
-export interface Subsystem<T> {
-    mode: ControlMode;
-    state: T;
+export interface Control {
+    environment: EnvironmentControl;
+    ipm: IpmControl;
+    lighting: LightingControl;
+    irrigation: IrrigationControl;
 }
 
-export interface Control {
-    environment: Subsystem<EnvironmentState>;
-    ipm: Subsystem<IpmState>;
-    lighting: Subsystem<LightingState>;
-    irrigation: Subsystem<IrrigationState>;
+export interface Status {
+    environment?: EnvironmentStatus;
+    ipm?: IpmStatus;
+    lighting?: LightingStatus;
+    irrigation?: IrrigationStatus;
 }
 
 export interface Actuator {
@@ -121,6 +118,7 @@ export enum IrrigationFrequency {
 }
 
 export interface IrrigationRecipeZone {
+    name: string;
     time: string;
     duration: number;
     sunday: boolean;
@@ -149,6 +147,7 @@ export interface GreenhouseState {
     time: Date;
     sensor: Sensor;
     control: Control;
+    status?: Status;
     recipes: Recipes;
     actuator: Actuator;
     weather?: Weather;

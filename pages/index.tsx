@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { User } from '../types/user'
 import { Greenhouse } from '../types/greenhouse'
-import { control_mode_display, environment_state_display, GreenhouseState, ipm_state_display, irrigation_state_display, lightning_state_display } from '../types/greenhouse-state'
+import { control_mode_display, GreenhouseState } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -18,6 +18,7 @@ import Irrigation from '../components/irrigation/irrigation'
 import Settings from '../components/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
+import { utcTimeToLocal } from '../utils/time'
 
 const PING_INTERVAL_MILLIS = 3 * 1000;
 
@@ -159,7 +160,7 @@ const Home: NextPage = () => {
                 Environment
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {environment_state_display(greenhouseState?.control.environment.state)}
+                {/* TODO: */}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
             </CardContent>
@@ -172,7 +173,7 @@ const Home: NextPage = () => {
                 Lighting
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {lightning_state_display(greenhouseState?.control.lighting.state)}
+                {greenhouseState?.status?.lighting?.dli}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
             </CardContent>
@@ -185,7 +186,10 @@ const Home: NextPage = () => {
                 Irrigation
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {irrigation_state_display(greenhouseState?.control.irrigation.state)}
+                Next @
+                {utcTimeToLocal(greenhouseState?.status?.irrigation?.next_time ?? "")}
+                <br />
+                {/* Zone {greenhouseState?.status?.irrigation?.next_zone + 1} */}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
             </CardContent>
@@ -198,7 +202,7 @@ const Home: NextPage = () => {
                 Pest Control
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {ipm_state_display(greenhouseState?.control.ipm.state)}
+                {utcTimeToLocal(greenhouseState?.status?.ipm?.next_time ?? "")}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
             </CardContent>
