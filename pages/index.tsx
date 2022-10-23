@@ -330,10 +330,45 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
   if(command?.irrigation?.mode === greenhouseState.control.irrigation.mode)
     delete command.irrigation.mode;
 
-  // TODO: irrigation
+  if(command.irrigation?.recipes) {
+    for(const i in command.irrigation.recipes) {
+      if(command.irrigation.recipes[i]?.time === greenhouseState.recipes.irrigation.zones[i]?.time)
+        delete command.irrigation.recipes[i]?.time;
+      if(command.irrigation.recipes[i]?.duration === greenhouseState.recipes.irrigation.zones[i]?.duration)
+        delete command.irrigation.recipes[i]?.duration;
+      if(command.irrigation.recipes[i]?.sunday === greenhouseState.recipes.irrigation.zones[i]?.sunday)
+        delete command.irrigation.recipes[i]?.sunday;
+      if(command.irrigation.recipes[i]?.monday === greenhouseState.recipes.irrigation.zones[i]?.monday)
+        delete command.irrigation.recipes[i]?.monday;
+      if(command.irrigation.recipes[i]?.tuesday === greenhouseState.recipes.irrigation.zones[i]?.tuesday)
+        delete command.irrigation.recipes[i]?.tuesday;
+      if(command.irrigation.recipes[i]?.wednesday === greenhouseState.recipes.irrigation.zones[i]?.wednesday)
+        delete command.irrigation.recipes[i]?.wednesday;
+      if(command.irrigation.recipes[i]?.thursday === greenhouseState.recipes.irrigation.zones[i]?.thursday)
+        delete command.irrigation.recipes[i]?.thursday;
+      if(command.irrigation.recipes[i]?.friday === greenhouseState.recipes.irrigation.zones[i]?.friday)
+        delete command.irrigation.recipes[i]?.friday;
+      if(command.irrigation.recipes[i]?.saturday === greenhouseState.recipes.irrigation.zones[i]?.saturday)
+        delete command.irrigation.recipes[i]?.saturday;
+
+      if(lodash.isEmpty(command.irrigation.recipes[i]))
+        delete command.irrigation.recipes[i];
+    }
+  }
+
+  if(command.irrigation?.trigger_valve) {
+    for(const i in command.irrigation.trigger_valve) {
+      if(command.irrigation.trigger_valve[i] === greenhouseState.actuator.valves[i])
+        delete command.irrigation.trigger_valve[i];
+
+      if(lodash.isEmpty(command.irrigation.trigger_valve))
+        delete command.irrigation.trigger_valve;
+    }
+  }
 
   if(command?.irrigation && lodash.isEmpty(command.irrigation))
     delete command.irrigation;
+
 
   return command;
 }
