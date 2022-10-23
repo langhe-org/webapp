@@ -8,6 +8,7 @@ import Drawer from '@mui/material/Drawer';
 import styles from './edit-day.module.css';
 import { ChangeEvent, useState } from 'react';
 import { localTimeToUtc, utcTimeToLocal } from '../../utils/time';
+import lodash from 'lodash'
 
 interface Props {
   recipeZone: IrrigationRecipeZone,
@@ -38,7 +39,12 @@ const EditDay = (props: Props) => {
       recipe.saturday = zone.saturday;
     if(zone.sunday !== props.recipeZone.sunday)
       recipe.sunday = zone.sunday;
-    props.onChange(recipe);
+
+    // don't trigger onChange if empty
+    if(lodash.isEmpty(recipe))
+      props.onClose();
+    else
+      props.onChange(recipe);
   };
 
   return (
