@@ -15,7 +15,7 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
         .then(res => {
             if(res.status === 401) {
                 Router.push(`login`);
-                throw new Error("Unauthorized");
+                throw new UnauthorizedError("Unauthorized");
             } else {
                 return res
             }
@@ -29,8 +29,11 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
         })
         .then(res => res.json())
         .catch(e => {
-            alert("Error");
+            if(!(e instanceof UnauthorizedError))
+                alert("Error");
             console.error(e);
             throw e;
         })
 }
+
+class UnauthorizedError extends Error {}
