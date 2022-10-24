@@ -71,7 +71,6 @@ const Home: NextPage = () => {
     api<Greenhouse>(`/greenhouse/${user.greenhouse_ids[0]}`)
       .then(greenhouse => {
         setGreenhouse(greenhouse)
-        setTimeout(() => console.log("after setting greenhouse and timeoute: ", greenhouse), 100)
       })
   }, [user]);
 
@@ -211,7 +210,6 @@ const Home: NextPage = () => {
         <Settings
           onClose={() => setActivePopup(undefined)}
           open={activePopup === ActivePopup.Settings}
-          user={user}
           greenhouse={greenhouse}
         />
         <Environment
