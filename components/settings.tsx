@@ -1,14 +1,16 @@
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import { User } from '../types/user'
+import { Units, User } from '../types/user'
 import { Greenhouse } from '../types/greenhouse'
 import Dialog from './dialog'
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
+import { useContext, useEffect, useState } from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { api } from '../services/api';
+import { UserContext } from '../contexts/user';
+import Loadable from './loadable';
 
 const styles = {
   main: {
@@ -26,62 +28,86 @@ const styles = {
 interface Props {
   onClose: () => void;
   open: boolean,
-  user?: User,
   greenhouse?: Greenhouse,
 }
 
 const Settings = (props: Props) => {
+  const globalUserContext = useContext(UserContext);
+  const [user, setUser] = useState<User | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // set user after load
+  useEffect(() => {
+    setUser(globalUserContext.user);
+  }, [globalUserContext]);
+
+  const onSave = () => {
+    setIsLoading(true);
+    api(`/account`, "PATCH", user)
+      .then(() => {
+        globalUserContext.setUser(user!);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        alert("Error saving changes");
+        location.reload();
+      })
+  }
+
   return (
     <Dialog {...props}>
-      <div style={styles.main}>
-        <IconButton sx={styles.backButton} onClick={props.onClose}>
-          <Icon>close</Icon>
-        </IconButton>
-        <Typography variant='h1' sx={{ fontSize: 60 }}>
-          Settings
-        </Typography>
-        <FormControl>
-          <InputLabel htmlFor="component-outlined">Name</InputLabel>
-          <OutlinedInput
-            id="component-outlined"
-            value={props.user?.name ?? ""}
-            // onChange={handleChange}
-            label="Name"
-          />
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="component-outlined">Greenhouse ID</InputLabel>
-          <OutlinedInput
-            id="component-outlined"
-            value={props.greenhouse?.id ?? ""}
-            // onChange={handleChange}
-            label="Greenhouse ID"
-            readOnly={true}
-          />
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="component-outlined">Location</InputLabel>
-          <OutlinedInput
-            id="component-outlined"
-            value={props.greenhouse?.location_name ?? ""}
-            // onChange={handleChange}
-            label="Location "
-            readOnly={true}
-          />
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel htmlFor="component-outlined">Units</InputLabel>
-          <Select
-            labelId="component-outlined"
-            value={props.user?.units}
-            label="Sulfur Level"
-          // onChange={handleChange}
-          >
-            <MenuItem value={"metric"}>Metric</MenuItem>
-            <MenuItem value={"imperial"}>Imperial</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+      <Loadable isLoading={isLoading}>
+        <div style={styles.main}>
+          { user && <>
+            <IconButton sx={styles.backButton} onClick={props.onClose}>
+              <Icon>close</Icon>
+            </IconButton>
+            <Typography variant='h1' sx={{ fontSize: 60 }}>
+              Settings
+            </Typography>
+            <TextField
+              label="Users Name"
+              variant="filled"
+              value={user?.name ?? ""}
+              onChange={e => setUser({
+                ...user,
+                name: e.target.value
+              })}
+            />
+            <TextField
+              label="Greenhouse Identifier"
+              variant="filled"
+              value={props.greenhouse?.id ?? ""}
+              disabled
+            />
+            <TextField
+              label="Location"
+              variant="filled"
+              value={props.greenhouse?.location_name ?? ""}
+              disabled
+            />
+            <TextField
+              label="Units"
+              variant="filled"
+              select
+              value={user?.units ?? ""}
+              onChange={e => {
+                setUser({
+                  ...user,
+                  units: e.target.value as Units
+                })
+              }}
+            >
+              <MenuItem value={Units.Metric}>Metric</MenuItem>
+              <MenuItem value={Units.Imperial}>Imperial</MenuItem>
+            </TextField>
+            <Button
+              variant="contained"
+              onClick={onSave}
+            >Save</Button>
+          </> }
+        </div>
+      </Loadable>
     </Dialog>
   )
 }
