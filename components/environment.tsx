@@ -11,6 +11,9 @@ import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import { Command } from '../types/command';
 import Loadable from './loadable';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/user';
+import { temperatureFromMetric, temperatureToMetric } from '../utils/temperature';
 
 const styles = {
   main: {
@@ -39,9 +42,10 @@ interface Props {
 
 const Environment = (props: Props) => {
   const greenhouseState = props.greenhouseState;
+  const { user } = useContext(UserContext);
   return (
     <Dialog {...props}>
-      <div style={styles.main}>
+      { user && <div style={styles.main}>
         <IconButton sx={styles.backButton} onClick={props.onClose}>
           <Icon>close</Icon>
         </IconButton>
@@ -59,32 +63,54 @@ const Environment = (props: Props) => {
           />
         </Loadable>
         <Loadable isLoading={props.queuedCommands?.environment?.recipe?.day_temperature !== undefined ?? false}>
-          <FormControl>
-            <InputLabel htmlFor="component-outlined">Day Setpoint</InputLabel>
-            <OutlinedInput
-              sx={{ textAlign: "end" }}
-              id="component-outlined"
-              value={greenhouseState?.recipes.environment.day_temperature}
-              onChange={e => props.onCommand({environment: { recipe: { day_temperature: parseInt(e.target.value) }}})}
-              type="number"
-              label="Day Setpoint"
-              endAdornment={<InputAdornment position="start">°C</InputAdornment>}
-            />
-          </FormControl>
+          { greenhouseState?.recipes.environment.day_temperature !== undefined && (
+            <FormControl>
+              <InputLabel htmlFor="component-outlined">Day Setpoint</InputLabel>
+              <OutlinedInput
+                sx={{ textAlign: "end" }}
+                id="component-outlined"
+                value={temperatureFromMetric(
+                  greenhouseState.recipes.environment.day_temperature,
+                  user.units
+                )}
+                onChange={e => {
+                  const day_temperature = temperatureToMetric(
+                    parseFloat(e.target.value),
+                    user.units
+                  );
+                  props.onCommand({environment: { recipe: { day_temperature }}});
+                }}
+                type="number"
+                label="Day Setpoint"
+                endAdornment={<InputAdornment position="start">°C</InputAdornment>}
+              />
+            </FormControl>
+          )}
         </Loadable>
         <Loadable isLoading={props.queuedCommands?.environment?.recipe?.night_temperature !== undefined ?? false}>
-          <FormControl>
-            <InputLabel htmlFor="component-outlined">Night Setpoint</InputLabel>
-            <OutlinedInput
-              sx={{ textAlign: "end" }}
-              id="component-outlined"
-              value={greenhouseState?.recipes.environment.night_temperature}
-              onChange={e => props.onCommand({environment: { recipe: { night_temperature: parseInt(e.target.value) }}})}
-              type="number"
-              label="Night Setpoint"
-              endAdornment={<InputAdornment position="start">°C</InputAdornment>}
-            />
-          </FormControl>
+          { greenhouseState?.recipes.environment.night_temperature !== undefined && (
+            <FormControl>
+              <InputLabel htmlFor="component-outlined">Night Setpoint</InputLabel>
+              <OutlinedInput
+                sx={{ textAlign: "end" }}
+                id="component-outlined"
+                value={temperatureFromMetric(
+                  greenhouseState.recipes.environment.day_temperature,
+                  user.units
+                )}
+                onChange={e => {
+                  const night_temperature = temperatureToMetric(
+                    parseFloat(e.target.value),
+                    user.units
+                  );
+                  props.onCommand({environment: { recipe: { night_temperature }}});
+                }}
+                type="number"
+                label="Night Setpoint"
+                endAdornment={<InputAdornment position="start">°C</InputAdornment>}
+              />
+            </FormControl>
+          )}
         </Loadable>
         <Typography variant='h1' sx={styles.manualControlHeader}>
           Manual Control
@@ -122,7 +148,7 @@ const Environment = (props: Props) => {
             disabled={greenhouseState?.control.environment.mode !== ControlMode.Manual}
           />
         </Loadable>
-      </div>
+      </div> }
     </Dialog>
   )
 }
