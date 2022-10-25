@@ -76,7 +76,7 @@ const PestControl = (props: Props) => {
               <MenuItem value={SulfurIntensity.off}>Off</MenuItem>
               <MenuItem value={SulfurIntensity.low}>Low</MenuItem>
               <MenuItem value={SulfurIntensity.medium}>Medium</MenuItem>
-              <MenuItem value={SulfurIntensity.high}>Hight</MenuItem>
+              <MenuItem value={SulfurIntensity.high}>High</MenuItem>
             </TextField>
           </Loadable>
         </div>
