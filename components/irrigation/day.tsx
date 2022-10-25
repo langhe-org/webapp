@@ -4,6 +4,7 @@ import Icon from '@mui/material/Icon';
 import styles from './day.module.css';
 import Divider from '@mui/material/Divider';
 import ButtonBase from '@mui/material/ButtonBase';
+import { millisecondsToMinutes } from '../../utils/time';
 
 interface Props {
   onClick: () => void;
@@ -53,7 +54,7 @@ const IrrigationDay = (props: Props) => {
         </div>
         <div className={styles.duration}>
           <Typography className={styles.label} color="#00000099">Duration</Typography>
-          <Typography className={styles.value}>{zone? secondsToMinutes(zone.duration) : ""} Mins</Typography>
+          <Typography className={styles.value}>{zone? millisecondsToMinutes(zone.duration) : ""} Mins</Typography>
         </div>
       </ButtonBase>
       <Divider />
@@ -67,8 +68,4 @@ function timeDisplay(time: string): string {
   const day = "2020-01-01";
   const date = new Date(day + "T" + time + "Z");
   return date.toLocaleString(undefined, {hour: "numeric", minute: "2-digit"});
-}
-
-function secondsToMinutes(seconds: number): number {
-  return seconds / 60;
 }
