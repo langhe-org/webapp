@@ -37,6 +37,7 @@ export interface LightingCommand {
 }
 
 export interface IrrigationRecipeCommand {
+    name?: string;
     time?: string;
     duration?: number;
     sunday?: boolean;

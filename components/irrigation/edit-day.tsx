@@ -56,7 +56,12 @@ const EditDay = (props: Props) => {
       onClose={props.onClose}
     >
       <div className={styles.main}>
-        <TextField label="Name of Zone" variant="filled" />
+        <TextField
+          label="Name of Zone"
+          variant="filled"
+          value={zone.name}
+          onChange={e => setZone({...zone, name: e.target.value})}
+        />
         <ToggleButtonGroup
           color="primary"
           aria-label="Weekdays"

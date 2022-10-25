@@ -330,6 +330,8 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
 
   if(command.irrigation?.recipes) {
     for(const i in command.irrigation.recipes) {
+      if(command.irrigation.recipes[i]?.name === greenhouseState.recipes.irrigation.zones[i]?.name)
+        delete command.irrigation.recipes[i]?.name;
       if(command.irrigation.recipes[i]?.time === greenhouseState.recipes.irrigation.zones[i]?.time)
         delete command.irrigation.recipes[i]?.time;
       if(command.irrigation.recipes[i]?.duration === greenhouseState.recipes.irrigation.zones[i]?.duration)
