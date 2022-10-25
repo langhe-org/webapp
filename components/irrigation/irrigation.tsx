@@ -47,13 +47,13 @@ const Irrigation = (props: Props) => {
           )) }
         </div>
 
-        <Typography variant='h2' >
+        <Typography className={styles.manualControlLabel} variant='h2' >
           Manual Control
         </Typography>
 
         { greenhouseState?.actuator.valves.map((valve, i) => (
           <div key={i} className={styles.switchContainer}>
-            <div className={styles.modeLabel}>AUTO MODE</div>
+            <div className={styles.modeLabel}>{greenhouseState.recipes.irrigation.zones[i].name}</div>
             <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.trigger_valve?.[i] !== undefined ?? false}>
               <Switch
                 checked={valve}

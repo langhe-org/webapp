@@ -1,6 +1,5 @@
 .main {
     display: grid;
-    text-align: center;
     row-gap: 22px;
 }
 .switchContainer {
@@ -9,6 +8,9 @@
 }
 .modeLabel {
 
+}
+.manualControlLabel {
+    text-align: center;
 }
 .zoneSwitchLabel {
 
