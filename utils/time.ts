@@ -16,3 +16,12 @@ export function utcTimeToLocal(utc: string): string {
     minute: "2-digit",
   });
 }
+
+export function millisecondsToMinutes(milliseconds: number): number {
+  return milliseconds / 60 / 1000;
+}
+
+
+export function minutesToMilliseconds(minutes: number): number {
+  return minutes * 60 * 1000;
+}
