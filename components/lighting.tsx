@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import Loadable from './loadable';
 import { Command } from '../types/command';
-import { localTimeToUtc, utcTimeToLocal } from '../utils/time';
+import { timeWithoutSeconds } from '../utils/time';
 
 const styles = {
   main: {
@@ -66,8 +66,8 @@ const Lighting = (props: Props) => {
               <OutlinedInput
                 sx={{ textAlign: "end" }}
                 id="component-outlined"
-                value={utcTimeToLocal(greenhouseState?.recipes.lighting.start_at)}
-                onChange={e => props.onCommand({lighting: { recipe: {start_at: localTimeToUtc(e.target.value)} }})}
+                value={timeWithoutSeconds(greenhouseState.recipes.lighting.start_at)}
+                onChange={e => props.onCommand({lighting: { recipe: {start_at: e.target.value} }})}
                 type="time"
                 label="Morning On"
               />
@@ -79,8 +79,8 @@ const Lighting = (props: Props) => {
               <OutlinedInput
                 sx={{ textAlign: "end" }}
                 id="component-outlined"
-                value={utcTimeToLocal(greenhouseState.recipes.lighting.stop_at)}
-                onChange={e => props.onCommand({lighting: { recipe: {stop_at: localTimeToUtc(e.target.value)} }})}
+                value={timeWithoutSeconds(greenhouseState.recipes.lighting.stop_at)}
+                onChange={e => props.onCommand({lighting: { recipe: {stop_at: e.target.value} }})}
                 type="time"
                 label="Night Off"
               />

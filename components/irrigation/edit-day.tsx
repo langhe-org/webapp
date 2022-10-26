@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Drawer from '@mui/material/Drawer';
 import styles from './edit-day.module.css';
 import { ChangeEvent, useState } from 'react';
-import { localTimeToUtc, millisecondsToMinutes, minutesToMilliseconds, utcTimeToLocal } from '../../utils/time';
+import { millisecondsToMinutes, minutesToMilliseconds, timeWithoutSeconds } from '../../utils/time';
 import lodash from 'lodash'
 
 interface Props {
@@ -120,9 +120,9 @@ const EditDay = (props: Props) => {
           type="time"
           label="Start Time"
           variant="filled"
-          value={utcTimeToLocal(zone.time)}
+          value={timeWithoutSeconds(zone.time)}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            const time = localTimeToUtc(e.target.value);
+            const time = e.target.value;
             setZone({...zone, time});
           }}
         />
