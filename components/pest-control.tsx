@@ -1,11 +1,8 @@
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { ControlMode, GreenhouseState, SulfurIntensity } from '../types/greenhouse-state';
+import { ControlMode, GreenhouseState, SulfurIntensity, sulfur_intensity_display } from '../types/greenhouse-state';
 import Dialog from './dialog';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
@@ -73,10 +70,10 @@ const PestControl = (props: Props) => {
               value={greenhouseState?.recipes.ipm.intensity}
               onChange={e => props.onCommand({ipm: { recipe: { intensity: e.target.value as SulfurIntensity } }})}
             >
-              <MenuItem value={SulfurIntensity.off}>Off</MenuItem>
-              <MenuItem value={SulfurIntensity.low}>Low</MenuItem>
-              <MenuItem value={SulfurIntensity.medium}>Medium</MenuItem>
-              <MenuItem value={SulfurIntensity.high}>High</MenuItem>
+              <MenuItem value={SulfurIntensity.off}>{sulfur_intensity_display(SulfurIntensity.off)}</MenuItem>
+              <MenuItem value={SulfurIntensity.low}>{sulfur_intensity_display(SulfurIntensity.low)}</MenuItem>
+              <MenuItem value={SulfurIntensity.medium}>{sulfur_intensity_display(SulfurIntensity.medium)}</MenuItem>
+              <MenuItem value={SulfurIntensity.high}>{sulfur_intensity_display(SulfurIntensity.high)}</MenuItem>
             </TextField>
           </Loadable>
         </div>
