@@ -70,14 +70,10 @@ export interface Actuator {
     valves: boolean[];
 }
 
-export enum SkyWeather {
-    Default = "default",
-}
-
 export interface WeatherCurrent {
     temperature: number;
     humidity: number;
-    sky: SkyWeather;
+    sky: string;
 }
 
 export interface Weather {
