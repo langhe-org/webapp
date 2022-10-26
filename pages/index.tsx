@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { User } from '../types/user'
 import { Greenhouse } from '../types/greenhouse'
-import { control_mode_display, GreenhouseState } from '../types/greenhouse-state'
+import { control_mode_display, GreenhouseState, sulfur_intensity_display } from '../types/greenhouse-state'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -18,7 +18,7 @@ import Irrigation from '../components/irrigation/irrigation'
 import Settings from '../components/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
-import { timeDisplay } from '../utils/time'
+import { temperatureFromMetric, unitsSymbol } from '../utils/temperature'
 
 const PING_INTERVAL_MILLIS = 3 * 1000;
 
@@ -159,7 +159,9 @@ const Home: NextPage = () => {
                 Environment
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {/* TODO: */}
+                { greenhouseState?.sensor.temperature !== undefined && greenhouseState?.sensor.humidity !== undefined && user ? (
+                  `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity}% RH`
+                ) : "-"}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
             </CardContent>
@@ -172,7 +174,7 @@ const Home: NextPage = () => {
                 Lighting
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {greenhouseState?.status?.lighting?.dli}
+                {greenhouseState?.status?.lighting?.dli?.toFixed(1)}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
             </CardContent>
@@ -184,12 +186,16 @@ const Home: NextPage = () => {
               <Typography variant='h6' color="text.secondary">
                 Irrigation
               </Typography>
-              <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                Next @
-                { greenhouseState?.status?.irrigation?.next_time !== undefined && timeDisplay(greenhouseState.status.irrigation.next_time)}
-                <br />
-                {/* Zone {greenhouseState?.status?.irrigation?.next_zone + 1} */}
-              </Typography>
+              { greenhouseState?.status?.irrigation?.next_time !== undefined && greenhouseState?.status?.irrigation?.next_zone !== undefined ? (
+                <>
+                  <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
+                    {nextTimeString(greenhouseState.status.irrigation.next_time)}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Zone {greenhouseState.status.irrigation.next_zone + 1}
+                  </Typography>
+                </>
+              ) : "-" }
               <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)}  sx={styles.cardChip} />
             </CardContent>
           </CardActionArea>
@@ -200,9 +206,16 @@ const Home: NextPage = () => {
               <Typography variant='h6' color="text.secondary">
                 Pest Control
               </Typography>
-              <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                { greenhouseState?.status?.ipm?.next_time !== undefined && timeDisplay(greenhouseState.status.ipm.next_time)}
-              </Typography>
+              { greenhouseState?.status?.ipm?.next_time !== undefined && greenhouseState?.recipes.ipm.intensity !== undefined ? (
+                <>
+                  <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
+                    {nextTimeString(greenhouseState.status.ipm.next_time)}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Zone {sulfur_intensity_display(greenhouseState.recipes.ipm.intensity)}
+                  </Typography>
+                </>
+              ) : "-" }
               <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
             </CardContent>
           </CardActionArea>
@@ -246,6 +259,29 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+
+const nextDateFormatter = new Intl.DateTimeFormat(undefined, {
+  month: "numeric",
+  day: "2-digit",
+});
+const nextTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  hour: "numeric",
+  minute: "2-digit",
+});
+function nextTimeString(datetime: string): string {
+  const dayInSeconds = 24 * 60 * 60;
+  const date = new Date(datetime);
+  let tomorrow = new Date();
+  tomorrow.setSeconds(tomorrow.getSeconds() + dayInSeconds);
+  if(date > tomorrow) {
+    let date = nextDateFormatter.format(dayInSeconds);
+    return `NEXT ON ${date}`;
+  } else {
+    let time = nextTimeFormatter.format(dayInSeconds);
+    return `NEXT @ ${time}`;
+  }
+}
 
 const theme = createTheme({
   palette: {

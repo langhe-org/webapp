@@ -17,3 +17,12 @@ export function temperatureFromMetric(value: number, to: Units): number {
         value = temperatureMetricToImperial(value);
     return value;
 }
+
+export function unitsSymbol(units: Units) {
+    switch (units) {
+        case Units.Metric:
+            return "°C";
+        case Units.Imperial:
+            return "°F";
+    }
+}
