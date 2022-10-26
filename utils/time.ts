@@ -1,3 +1,5 @@
+// these functions can really use tests
+
 export function timeDisplay(time: string): string {
   const day = "2020-01-01";
   const date = new Date(day + "T" + time);
