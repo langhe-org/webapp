@@ -4,7 +4,7 @@ import Icon from '@mui/material/Icon';
 import styles from './day.module.css';
 import Divider from '@mui/material/Divider';
 import ButtonBase from '@mui/material/ButtonBase';
-import { millisecondsToMinutes } from '../../utils/time';
+import { millisecondsToMinutes, timeDisplay } from '../../utils/time';
 
 interface Props {
   onClick: () => void;
@@ -63,9 +63,3 @@ const IrrigationDay = (props: Props) => {
 }
 
 export default IrrigationDay
-
-function timeDisplay(time: string): string {
-  const day = "2020-01-01";
-  const date = new Date(day + "T" + time + "Z");
-  return date.toLocaleString(undefined, {hour: "numeric", minute: "2-digit"});
-}

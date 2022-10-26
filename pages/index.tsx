@@ -18,7 +18,7 @@ import Irrigation from '../components/irrigation/irrigation'
 import Settings from '../components/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
-import { utcTimeToLocal } from '../utils/time'
+import { timeDisplay } from '../utils/time'
 
 const PING_INTERVAL_MILLIS = 3 * 1000;
 
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
                 Next @
-                {utcTimeToLocal(greenhouseState?.status?.irrigation?.next_time ?? "")}
+                { greenhouseState?.status?.irrigation?.next_time !== undefined && timeDisplay(greenhouseState.status.irrigation.next_time)}
                 <br />
                 {/* Zone {greenhouseState?.status?.irrigation?.next_zone + 1} */}
               </Typography>
@@ -201,7 +201,7 @@ const Home: NextPage = () => {
                 Pest Control
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {utcTimeToLocal(greenhouseState?.status?.ipm?.next_time ?? "")}
+                { greenhouseState?.status?.ipm?.next_time !== undefined && timeDisplay(greenhouseState.status.ipm.next_time)}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)}  sx={styles.cardChip} />
             </CardContent>
