@@ -92,6 +92,20 @@ export enum SulfurIntensity {
     medium = "medium",
     high = "high",
 }
+export function sulfur_intensity_display(intensity?: SulfurIntensity) {
+    switch (intensity) {
+        case SulfurIntensity.off:
+            return "Off";
+        case SulfurIntensity.low:
+            return "Low";
+        case SulfurIntensity.medium:
+            return "Medium";
+        case SulfurIntensity.high:
+            return "High";
+        default:
+            return "";
+    }
+}
 
 export interface IpmRecipe {
     intensity: SulfurIntensity
