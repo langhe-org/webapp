@@ -160,7 +160,7 @@ const Home: NextPage = () => {
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
                 { greenhouseState?.sensor.temperature !== undefined && greenhouseState?.sensor.humidity !== undefined && user ? (
-                  `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity}% RH`
+                  `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity.toFixed(0)}% RH`
                 ) : "-"}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
@@ -212,7 +212,7 @@ const Home: NextPage = () => {
                     {nextTimeString(greenhouseState.status.ipm.next_time)}
                   </Typography>
                   <Typography color="text.secondary">
-                    Zone {sulfur_intensity_display(greenhouseState.recipes.ipm.intensity)}
+                    Intensity: {sulfur_intensity_display(greenhouseState.recipes.ipm.intensity)}
                   </Typography>
                 </>
               ) : "-" }
