@@ -174,7 +174,7 @@ const Home: NextPage = () => {
                 Lighting
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
-                {greenhouseState?.status?.lighting?.dli?.toFixed(1)}
+                DLI - {greenhouseState?.status?.lighting?.dli?.toFixed(1)}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)} sx={styles.cardChip} />
             </CardContent>
