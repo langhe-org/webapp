@@ -21,6 +21,8 @@ const EditDay = (props: Props) => {
 
   const onSave = () => {
     const recipe: IrrigationRecipeCommand = {};
+    if(zone.name !== props.recipeZone.name)
+      recipe.name = zone.name;
     if(zone.time !== props.recipeZone.time)
       recipe.time = zone.time;
     if(zone.duration !== props.recipeZone.duration)
