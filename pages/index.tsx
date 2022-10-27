@@ -160,7 +160,7 @@ const Home: NextPage = () => {
               </Typography>
               <Typography variant='h3' sx={styles.pageLinkH3} color="text.secondary">
                 { greenhouseState?.sensor.temperature !== undefined && greenhouseState?.sensor.humidity !== undefined && user ? (
-                  `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity.toFixed(0)}% RH`
+                  `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units).toFixed(0)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity.toFixed(0)}% RH`
                 ) : "-"}
               </Typography>
               <Chip label={control_mode_display(greenhouseState?.control.environment.mode)} sx={styles.cardChip} />
