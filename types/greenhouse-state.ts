@@ -4,7 +4,7 @@ export enum ControlMode {
 }
 export function control_mode_display(mode?: ControlMode) {
     if(mode === ControlMode.Automatic)
-        return "Automatic";
+        return "Auto";
     if(mode === ControlMode.Manual)
         return "Manual";
     return "";
