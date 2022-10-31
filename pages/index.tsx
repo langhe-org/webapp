@@ -77,155 +77,144 @@ const Home: NextPage = () => {
   }, [user]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <title>Langhe</title>
-        <link rel="icon" href="/favicon.ico" />
-        {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" /> */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-      </Head>
-      <div className={styles.main}>
-        <div className={styles.widthHolder}>
-          <div className={styles.header}>
-            <Typography className={styles.title} variant='h1'>Langhe</Typography>
-            <IconButton className={styles.settingLink} onClick={() => setActivePopup(ActivePopup.Settings)}>
-              <Icon>person</Icon>
-            </IconButton>
-          </div>
-          <Divider className={styles.divider} />
-          <Typography className={styles.greeting} variant='h4'>
-            Hi,<br />{user?.name}
-          </Typography>
-          <Card className={styles.infoSectionCard}>
-            <CardContent className={styles.infoSectionContent}>
-              <Typography className={styles.infoSectionCity}>{greenhouse?.location_name}</Typography>
-              <Typography className={styles.infoSectionLocation}>{greenhouse && `${latitudeLongitudeDisplay({
-                latitude: greenhouse.latitude,
-                longitude: greenhouse.longitude,
-              })}`}</Typography>
-              <Divider className={styles.infoSectionDivider} />
-              <Typography className={styles.infoSectionWeather}>
-                <span className={styles.infoSectionWeatherSky}>{greenhouseState?.weather?.current.sky}</span>
-                
-                <span>{greenhouseState?.weather?.current.temperature !== undefined && greenhouseState?.weather?.current.humidity !== undefined && user ? (
-                  `${temperatureFromMetric(greenhouseState.weather.current.temperature, user.units).toFixed(0)} ${unitsSymbol(user.units)} | ${greenhouseState.weather.current.humidity.toFixed(0)}% RH`
-                ) : ""}</span>
-              </Typography>
-            </CardContent>
-          </Card>
-          <div className={styles.pageLinksContainer}>
-            <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Environment)}>
-              <CardActionArea className={styles.pageLinkAction}>
-                <CardContent className={styles.pageLinkContent}>
-                  <Icon className={styles.pageLinkIcon}>device_thermostat</Icon>
-                  <Typography variant='h3' className={styles.pageLinkTitle}>
-                    Environment
-                  </Typography>
-                  <Typography className={styles.pageLinkText}>
-                    { greenhouseState?.sensor.temperature !== undefined && greenhouseState?.sensor.humidity !== undefined && user ? (
-                      `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units).toFixed(0)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity.toFixed(0)}% RH`
-                    ) : "-"}
-                  </Typography>
-                  <Chip label={control_mode_display(greenhouseState?.control.environment.mode)}className={styles.cardChip} />
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Lighting)}>
-              <CardActionArea className={styles.pageLinkAction}>
-                <CardContent className={styles.pageLinkContent}>
-                  <Icon className={styles.pageLinkIcon}>emoji_objects</Icon>
-                  <Typography variant='h3' className={styles.pageLinkTitle}>
-                    Lighting
-                  </Typography>
-                  <Typography className={styles.pageLinkText}>
-                    DLI - {greenhouseState?.status?.lighting?.dli?.toFixed(1)}
-                  </Typography>
-                  <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)}className={styles.cardChip} />
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Irrigation)}>
-              <CardActionArea className={styles.pageLinkAction}>
-                <CardContent className={styles.pageLinkContent}>
-                  <Icon className={styles.pageLinkIcon}>water_drop</Icon>
-                  <Typography variant='h3' className={styles.pageLinkTitle}>
-                    Irrigation
-                  </Typography>
-                  { greenhouseState?.status?.irrigation?.next_time !== undefined && greenhouseState?.status?.irrigation?.next_zone !== undefined ? (
-                    <>
-                      <Typography className={styles.pageLinkText}>
-                        {nextTimeString(greenhouseState.status.irrigation.next_time)}
-                      </Typography>
-                      <Typography className={styles.pageLinkSubtext}>
-                        Zone {greenhouseState.status.irrigation.next_zone + 1}
-                      </Typography>
-                    </>
-                  ) : "-" }
-                  <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)} className={styles.cardChip} />
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.PestControl)}>
-              <CardActionArea className={styles.pageLinkAction}>
-                <CardContent className={styles.pageLinkContent}>
-                  <Icon className={styles.pageLinkIcon}>pest_control</Icon>
-                  <Typography variant='h3' className={styles.pageLinkTitle}>
-                    Pest Control
-                  </Typography>
-                  { greenhouseState?.status?.ipm?.next_time !== undefined && greenhouseState?.recipes.ipm.intensity !== undefined ? (
-                    <>
-                      <Typography className={styles.pageLinkText}>
-                        {nextTimeString(greenhouseState.status.ipm.next_time)}
-                      </Typography>
-                      <Typography className={styles.pageLinkSubtext}>
-                        Intensity: {sulfur_intensity_display(greenhouseState.recipes.ipm.intensity)}
-                      </Typography>
-                    </>
-                  ) : "-" }
-                  <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)} className={styles.cardChip} />
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </div>
-          <Settings
-            onClose={() => setActivePopup(undefined)}
-            open={activePopup === ActivePopup.Settings}
-            greenhouse={greenhouse}
-          />
-          <Environment
-            onClose={() => setActivePopup(undefined)}
-            onCommand={onCommand}
-            open={activePopup === ActivePopup.Environment}
-            greenhouseState={greenhouseState}
-            queuedCommands={queuedCommands}
-          />
-          <Lighting
-            onClose={() => setActivePopup(undefined)}
-            onCommand={onCommand}
-            open={activePopup === ActivePopup.Lighting}
-            greenhouseState={greenhouseState}
-            queuedCommands={queuedCommands}
-          />
-          <Irrigation
-            onClose={() => setActivePopup(undefined)}
-            onCommand={onCommand}
-            open={activePopup === ActivePopup.Irrigation}
-            greenhouseState={greenhouseState}
-            queuedCommands={queuedCommands}
-          />
-          <PestControl
-            onClose={() => setActivePopup(undefined)}
-            onCommand={onCommand}
-            open={activePopup === ActivePopup.PestControl}
-            greenhouseState={greenhouseState}
-            queuedCommands={queuedCommands}
-          />
+    <div className={styles.main}>
+      <div className={styles.widthHolder}>
+        <div className={styles.header}>
+          <Typography className={styles.title} variant='h1'>Langhe</Typography>
+          <IconButton className={styles.settingLink} onClick={() => setActivePopup(ActivePopup.Settings)}>
+            <Icon>person</Icon>
+          </IconButton>
         </div>
+        <Divider className={styles.divider} />
+        <Typography className={styles.greeting} variant='h4'>
+          Hi,<br />{user?.name}
+        </Typography>
+        <Card className={styles.infoSectionCard}>
+          <CardContent className={styles.infoSectionContent}>
+            <Typography className={styles.infoSectionCity}>{greenhouse?.location_name}</Typography>
+            <Typography className={styles.infoSectionLocation}>{greenhouse && `${latitudeLongitudeDisplay({
+              latitude: greenhouse.latitude,
+              longitude: greenhouse.longitude,
+            })}`}</Typography>
+            <Divider className={styles.infoSectionDivider} />
+            <Typography className={styles.infoSectionWeather}>
+              <span className={styles.infoSectionWeatherSky}>{greenhouseState?.weather?.current.sky}</span>
+              
+              <span>{greenhouseState?.weather?.current.temperature !== undefined && greenhouseState?.weather?.current.humidity !== undefined && user ? (
+                `${temperatureFromMetric(greenhouseState.weather.current.temperature, user.units).toFixed(0)} ${unitsSymbol(user.units)} | ${greenhouseState.weather.current.humidity.toFixed(0)}% RH`
+              ) : ""}</span>
+            </Typography>
+          </CardContent>
+        </Card>
+        <div className={styles.pageLinksContainer}>
+          <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Environment)}>
+            <CardActionArea className={styles.pageLinkAction}>
+              <CardContent className={styles.pageLinkContent}>
+                <Icon className={styles.pageLinkIcon}>device_thermostat</Icon>
+                <Typography variant='h3' className={styles.pageLinkTitle}>
+                  Environment
+                </Typography>
+                <Typography className={styles.pageLinkText}>
+                  { greenhouseState?.sensor.temperature !== undefined && greenhouseState?.sensor.humidity !== undefined && user ? (
+                    `${temperatureFromMetric(greenhouseState.sensor.temperature, user.units).toFixed(0)} ${unitsSymbol(user.units)} | ${greenhouseState.sensor.humidity.toFixed(0)}% RH`
+                  ) : "-"}
+                </Typography>
+                <Chip label={control_mode_display(greenhouseState?.control.environment.mode)}className={styles.cardChip} />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Lighting)}>
+            <CardActionArea className={styles.pageLinkAction}>
+              <CardContent className={styles.pageLinkContent}>
+                <Icon className={styles.pageLinkIcon}>emoji_objects</Icon>
+                <Typography variant='h3' className={styles.pageLinkTitle}>
+                  Lighting
+                </Typography>
+                <Typography className={styles.pageLinkText}>
+                  DLI - {greenhouseState?.status?.lighting?.dli?.toFixed(1)}
+                </Typography>
+                <Chip label={control_mode_display(greenhouseState?.control.lighting.mode)}className={styles.cardChip} />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.Irrigation)}>
+            <CardActionArea className={styles.pageLinkAction}>
+              <CardContent className={styles.pageLinkContent}>
+                <Icon className={styles.pageLinkIcon}>water_drop</Icon>
+                <Typography variant='h3' className={styles.pageLinkTitle}>
+                  Irrigation
+                </Typography>
+                { greenhouseState?.status?.irrigation?.next_time !== undefined && greenhouseState?.status?.irrigation?.next_zone !== undefined ? (
+                  <>
+                    <Typography className={styles.pageLinkText}>
+                      {nextTimeString(greenhouseState.status.irrigation.next_time)}
+                    </Typography>
+                    <Typography className={styles.pageLinkSubtext}>
+                      Zone {greenhouseState.status.irrigation.next_zone + 1}
+                    </Typography>
+                  </>
+                ) : "-" }
+                <Chip label={control_mode_display(greenhouseState?.control.irrigation.mode)} className={styles.cardChip} />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Card className={styles.pageLinkCard} onClick={() => setActivePopup(ActivePopup.PestControl)}>
+            <CardActionArea className={styles.pageLinkAction}>
+              <CardContent className={styles.pageLinkContent}>
+                <Icon className={styles.pageLinkIcon}>pest_control</Icon>
+                <Typography variant='h3' className={styles.pageLinkTitle}>
+                  Pest Control
+                </Typography>
+                { greenhouseState?.status?.ipm?.next_time !== undefined && greenhouseState?.recipes.ipm.intensity !== undefined ? (
+                  <>
+                    <Typography className={styles.pageLinkText}>
+                      {nextTimeString(greenhouseState.status.ipm.next_time)}
+                    </Typography>
+                    <Typography className={styles.pageLinkSubtext}>
+                      Intensity: {sulfur_intensity_display(greenhouseState.recipes.ipm.intensity)}
+                    </Typography>
+                  </>
+                ) : "-" }
+                <Chip label={control_mode_display(greenhouseState?.control.ipm.mode)} className={styles.cardChip} />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </div>
+        <Settings
+          onClose={() => setActivePopup(undefined)}
+          open={activePopup === ActivePopup.Settings}
+          greenhouse={greenhouse}
+        />
+        <Environment
+          onClose={() => setActivePopup(undefined)}
+          onCommand={onCommand}
+          open={activePopup === ActivePopup.Environment}
+          greenhouseState={greenhouseState}
+          queuedCommands={queuedCommands}
+        />
+        <Lighting
+          onClose={() => setActivePopup(undefined)}
+          onCommand={onCommand}
+          open={activePopup === ActivePopup.Lighting}
+          greenhouseState={greenhouseState}
+          queuedCommands={queuedCommands}
+        />
+        <Irrigation
+          onClose={() => setActivePopup(undefined)}
+          onCommand={onCommand}
+          open={activePopup === ActivePopup.Irrigation}
+          greenhouseState={greenhouseState}
+          queuedCommands={queuedCommands}
+        />
+        <PestControl
+          onClose={() => setActivePopup(undefined)}
+          onCommand={onCommand}
+          open={activePopup === ActivePopup.PestControl}
+          greenhouseState={greenhouseState}
+          queuedCommands={queuedCommands}
+        />
       </div>
-    </ThemeProvider>
+    </div>
   )
 }
 
@@ -253,26 +242,6 @@ function nextTimeString(datetime: string): string {
     return `NEXT @ ${time}`;
   }
 }
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0A8E00'
-    },
-  },
-  components: {
-    MuiTypography: {
-      defaultProps: {
-        sx: {
-          fontWeight: 500
-        }
-      }
-    }
-  },
-  typography: {
-    fontFamily: "Poppins"
-  }
-});
 
 function removeResolvedCommands(command: Command, greenhouseState: GreenhouseState): Command {
   // this function can really use unit tests
