@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",
+    "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@mui/material": "^5.9.3",
+    "@mui/material": "^5.10.11",
     "lodash": "^4.17.21",
     "next": "12.2.3",
     "npm": "^8.18.0",
