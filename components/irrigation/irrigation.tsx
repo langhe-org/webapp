@@ -22,7 +22,7 @@ const Irrigation = (props: Props) => {
   const greenhouseState = props.greenhouseState;
 
   return (
-    <Dialog {...props}>
+    <Dialog {...props} rootClass={styles.dialog}>
       <div className={styles.main}>
         <div className={styles.switchContainer}>
           <div className={styles.modeLabel}>AUTO MODE</div>
