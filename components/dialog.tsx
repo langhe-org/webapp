@@ -13,6 +13,7 @@ interface Props {
   onClose: () => void,
   open: boolean,
   children: ReactNode,
+  rootClass?: string,
 }
 
 export default function Dialog(props: Props) {
@@ -25,7 +26,9 @@ export default function Dialog(props: Props) {
       open={props.open}
       onClose={props.onClose}
       TransitionComponent={Transition}
-      aria-labelledby="responsive-dialog-title"
+      classes={{
+        paper: props.rootClass
+      }}
     >
       <DialogContent>
         {props.children}
