@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Switch from '@mui/material/Switch'
 import { ControlMode, GreenhouseState } from '../../types/greenhouse-state';
-import Dialog from '../dialog';
+import Dialog from '../dialog/dialog';
 import { Command, IrrigationRecipeCommand } from '../../types/command';
 import Loadable from '../loadable';
 import IrrigationDay from './day';
@@ -22,7 +22,7 @@ const Irrigation = (props: Props) => {
   const greenhouseState = props.greenhouseState;
 
   return (
-    <Dialog {...props} rootClass={styles.dialog}>
+    <Dialog {...props} rootClass={styles.dialog} title="Irrigation">
       <div className={styles.main}>
         <div className={styles.switchContainer}>
           <div className={styles.modeLabel}>AUTO MODE</div>

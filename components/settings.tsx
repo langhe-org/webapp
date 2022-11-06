@@ -1,10 +1,7 @@
-import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem'
 import { Units, User } from '../types/user'
 import { Greenhouse } from '../types/greenhouse'
-import Dialog from './dialog'
-import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
+import Dialog from './dialog/dialog'
 import { useContext, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -55,16 +52,10 @@ const Settings = (props: Props) => {
   }
 
   return (
-    <Dialog {...props}>
+    <Dialog {...props} title="User Settings">
       <Loadable isLoading={isLoading}>
         <div style={styles.main}>
           { user && <>
-            <IconButton sx={styles.backButton} onClick={props.onClose}>
-              <Icon>close</Icon>
-            </IconButton>
-            <Typography variant='h1' sx={{ fontSize: 60 }}>
-              Settings
-            </Typography>
             <TextField
               label="Users Name"
               variant="filled"

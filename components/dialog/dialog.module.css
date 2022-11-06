@@ -1,0 +1,16 @@
+.content {
+    display: grid;
+    gap: 40px;
+    align-content: start;
+}
+.header {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    text-align: center;
+}
+.title {
+    font-weight: 500;
+    font-size: 20px;
+    color: #1E1E1E;
+}
