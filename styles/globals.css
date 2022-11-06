@@ -1,3 +1,26 @@
 :root {
     font-family: Poppins;
 }
+
+.MuiToggleButtonGroup-grouped,
+/* double class hack to increase specificity */
+.MuiToggleButtonGroup-grouped:not(:first-of-type).MuiToggleButtonGroup-grouped:not(:first-of-type) {
+    border-color: #fff;
+}
+.MuiToggleButton-root {
+    background-color: #E2DFDE;
+    color: #7B7B7B;
+}
+.MuiToggleButton-root.Mui-selected {
+    background-color: #0A8E00;
+    color: #FFFFFF;
+}
+.MuiToggleButton-root.Mui-selected:hover {
+    background-color: #0A8E00cc;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+}

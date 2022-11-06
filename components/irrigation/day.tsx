@@ -16,7 +16,7 @@ const IrrigationDay = (props: Props) => {
 
   return (
     <>
-      <ButtonBase component="div" className={styles.main} onClick={props.onClick}>
+      <ButtonBase className={styles.main} onClick={props.onClick}>
         <Typography className={styles.zoneName} color="primary">{zone?.name}</Typography>
         <div className={styles.days}>
           <div className={`${styles.day} ${zone?.monday ? styles.activeDay : ''}`}>
@@ -49,11 +49,11 @@ const IrrigationDay = (props: Props) => {
           </div>
         </div>
         <div className={styles.start_time}>
-          <Typography className={styles.label} color="#00000099">Start Time</Typography>
+          <Typography className="label" color="#00000099">Start Time</Typography>
           <Typography className={styles.value}>{zone ? timeDisplay(zone.time) : ""}</Typography>
         </div>
         <div className={styles.duration}>
-          <Typography className={styles.label} color="#00000099">Duration</Typography>
+          <Typography className="label" color="#00000099">Duration</Typography>
           <Typography className={styles.value}>{zone? millisecondsToMinutes(zone.duration) : ""} Mins</Typography>
         </div>
       </ButtonBase>
