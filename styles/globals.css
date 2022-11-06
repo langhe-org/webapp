@@ -11,6 +11,14 @@
     background-color: #E2DFDE;
     color: #7B7B7B;
 }
+.MuiToggleButton-root:hover {
+    background-color: #E2DFDEcc;
+}
+@media (hover: none) {
+    .MuiToggleButton-root:hover {
+        background-color: #E2DFDE;
+    }
+}
 .MuiToggleButton-root.Mui-selected {
     background-color: #0A8E00;
     color: #FFFFFF;
@@ -18,7 +26,11 @@
 .MuiToggleButton-root.Mui-selected:hover {
     background-color: #0A8E00cc;
 }
-
+@media (hover: none) {
+    .MuiToggleButton-root.Mui-selected:hover {
+        background-color: #0A8E00;
+    }
+}
 .label {
     font-size: 12px;
     font-weight: 500;
