@@ -1,5 +1,6 @@
 .main {
     min-height: 100vh;
+    min-height: 100dvh;
     margin: auto;
     padding: 0 10px;
     color: #fff;
@@ -16,6 +17,7 @@
     margin: auto;
     padding: 10px 0;
     min-height: 100vh;
+    min-height: 100dvh;
 }
 .header {
     padding-top: 24px;
