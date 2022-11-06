@@ -1,19 +1,22 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import styles from "./dialog.module.css";
 import MuiDialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
 import Slide from '@mui/material/Slide';
 import { ReactNode } from 'react';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Icon from '@mui/material/Icon';
 
 interface Props {
   onClose: () => void,
   open: boolean,
   children: ReactNode,
   rootClass?: string,
+  title: string,
 }
 
 export default function Dialog(props: Props) {
@@ -30,17 +33,15 @@ export default function Dialog(props: Props) {
         paper: props.rootClass
       }}
     >
-      <DialogContent>
+      <DialogContent className={styles.content}>
+        <div className={styles.header}>
+          <IconButton onClick={props.onClose}>
+            <Icon>chevron_left</Icon>
+          </IconButton>
+          <Typography className={styles.title}>{props.title}</Typography>
+        </div>
         {props.children}
       </DialogContent>
-      <DialogActions>
-        <Button onClick={props.onClose}>
-          Close
-        </Button>
-        {/* <Button>
-          Save
-        </Button> */}
-      </DialogActions>
     </MuiDialog>
   );
 }

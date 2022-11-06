@@ -5,9 +5,7 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
-import Dialog from './dialog'
-import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
+import Dialog from './dialog/dialog';
 import Loadable from './loadable';
 import { Command } from '../types/command';
 import { timeWithoutSeconds } from '../utils/time';
@@ -41,15 +39,9 @@ const Lighting = (props: Props) => {
   const greenhouseState = props.greenhouseState;
 
   return (
-    <Dialog {...props}>
+    <Dialog {...props} title="Lighting">
       { greenhouseState && (
         <div style={styles.main}>
-          <IconButton sx={styles.backButton} onClick={props.onClose}>
-            <Icon>close</Icon>
-          </IconButton>
-          <Typography variant='h1' sx={{ fontSize: 60 }}>
-            Lighting
-          </Typography>
           <Loadable isLoading={props.queuedCommands?.lighting?.mode !== undefined ?? false}>
             <FormControlLabel
               value="auto"

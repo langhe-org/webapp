@@ -1,11 +1,8 @@
-import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import MenuItem from '@mui/material/MenuItem'
 import { ControlMode, GreenhouseState, SulfurIntensity, sulfur_intensity_display } from '../types/greenhouse-state';
-import Dialog from './dialog';
-import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
+import Dialog from './dialog/dialog';
 import { Command } from '../types/command';
 import Loadable from './loadable';
 import { TextField } from '@mui/material';
@@ -42,15 +39,9 @@ const PestControl = (props: Props) => {
   const greenhouseState = props.greenhouseState;
 
   return (
-    <Dialog {...props}>
+    <Dialog {...props} title="Pest Control">
       { greenhouseState && (
         <div style={styles.main}>
-          <IconButton sx={styles.backButton} onClick={props.onClose}>
-            <Icon>close</Icon>
-          </IconButton>
-          <Typography variant='h1' sx={{ fontSize: 60 }}>
-            Pest Control
-          </Typography>
           <Loadable isLoading={props.queuedCommands?.ipm?.mode !== undefined ?? false}>
             <FormControlLabel
               value="auto"

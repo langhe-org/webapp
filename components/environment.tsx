@@ -6,9 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import InputAdornment from '@mui/material/InputAdornment'
 import { ControlMode, GreenhouseState } from '../types/greenhouse-state'
-import Dialog from './dialog'
-import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
+import Dialog from './dialog/dialog';
 import { Command } from '../types/command';
 import Loadable from './loadable';
 import { useContext } from 'react';
@@ -44,14 +42,8 @@ const Environment = (props: Props) => {
   const greenhouseState = props.greenhouseState;
   const { user } = useContext(UserContext);
   return (
-    <Dialog {...props}>
+    <Dialog {...props} title="Environment">
       { user && <div style={styles.main}>
-        <IconButton sx={styles.backButton} onClick={props.onClose}>
-          <Icon>close</Icon>
-        </IconButton>
-        <Typography variant='h1' sx={{ fontSize: 60 }}>
-          Environment
-        </Typography>
         <Loadable isLoading={props.queuedCommands?.environment?.mode !== undefined ?? false}>
           <FormControlLabel
             value="auto"
