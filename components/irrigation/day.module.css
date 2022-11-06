@@ -4,6 +4,7 @@
     justify-content: space-between;
     gap: 16px;
     margin-top: 12px;
+    width: 100%;
 }
 .zoneName {
     font-size: 16px;
@@ -27,9 +28,6 @@
 }
 .day.activeDay .circle {
     display: inline;
-}
-.label {
-    font-size: 12px;
 }
 .value {
     font-size: 16px;

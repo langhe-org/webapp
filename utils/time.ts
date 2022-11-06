@@ -18,6 +18,16 @@ export function timeWithoutSeconds(time: string): string {
   });
 }
 
+export function timeWithSeconds(time: string): string {
+  const day = "2020-01-01";
+  const date = new Date(day + "T" + time);
+  return date.toLocaleString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
 export function millisecondsToMinutes(milliseconds: number): number {
   return milliseconds / 60 / 1000;
 }
