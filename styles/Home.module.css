@@ -37,6 +37,8 @@
 .greeting {
     font-weight: 400;
     font-size: 32px;
+    /* fixed min-height to avoid layout shifting */
+    min-height: 80px;
 }
 .infoSectionCard {
     grid-column: 1 / -1;
@@ -47,6 +49,8 @@
     color: #fff;
     display: grid;
     box-shadow: none;
+    /* fixed min-height to avoid layout shifting */
+    min-height: 155px;
 }
 .infoSectionContent {
     display: grid;
