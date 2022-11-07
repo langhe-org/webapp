@@ -29,7 +29,7 @@ const Irrigation = (props: Props) => {
           <Loadable isLoading={props.queuedCommands?.irrigation?.mode !== undefined ?? false}>
             <Switch
               checked={greenhouseState?.control.irrigation.mode === ControlMode.Automatic}
-              onChange={e => props.onCommand({irrigation: { mode: e.target.value ? ControlMode.Automatic : ControlMode.Manual }})}
+              onChange={e => props.onCommand({irrigation: { mode: e.target.checked ? ControlMode.Automatic : ControlMode.Manual }})}
             />
           </Loadable>
         </div>
