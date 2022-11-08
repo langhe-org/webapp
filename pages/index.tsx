@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { User } from '../types/user'
 import { Greenhouse } from '../types/greenhouse'
 import { control_mode_display, GreenhouseState, sulfur_intensity_display } from '../types/greenhouse-state'
@@ -9,7 +8,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Chip, createTheme, Icon, IconButton, ThemeProvider } from '@mui/material';
+import { CardActionArea, Chip, Icon, IconButton } from '@mui/material';
 import { api } from '../services/api'
 import { UserContext } from '../contexts/user'
 import Environment from '../components/environment'
@@ -37,13 +36,13 @@ const Home: NextPage = () => {
   const [greenhouse, setGreenhouse] = useState<Greenhouse>();
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
   const [queuedCommands, setQueuedCommands] = useState<Command>({});
-  const queuedCommandsRef = useRef(queuedCommands);
   const [activePopup, setActivePopup] = useState<ActivePopup>();
 
   const onCommand = (command: Command) => {
     if(!user) return;
-    let v = lodash.merge(queuedCommandsRef.current, command);
-    setQueuedCommands({...v});
+    setQueuedCommands(queuedCommands => {
+      return structuredClone(lodash.merge(queuedCommands, command));
+    });
     api(`/greenhouse-command/${user.greenhouse_ids[0]}`, "post", command);
   }
 
@@ -52,8 +51,9 @@ const Home: NextPage = () => {
     api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
       .then(greenhouseState => {
         setGreenhouseState(greenhouseState)
-        let commands = removeResolvedCommands(queuedCommandsRef.current, greenhouseState);
-        setQueuedCommands(commands);
+        setQueuedCommands(queuedCommands => {
+          return removeResolvedCommands(queuedCommands, greenhouseState);
+        });
       })
       .finally(() => {
         setTimeout(getGreenhouseState, PING_INTERVAL_MILLIS)
@@ -333,16 +333,18 @@ function removeResolvedCommands(command: Command, greenhouseState: GreenhouseSta
       if(lodash.isEmpty(command.irrigation.recipes[i]))
         delete command.irrigation.recipes[i];
     }
+
+    if(command.irrigation.recipes.every(v => v === undefined))
+      delete command.irrigation.recipes;
   }
 
   if(command.irrigation?.trigger_valve) {
-    for(const i in command.irrigation.trigger_valve) {
+    for(const i in command.irrigation.trigger_valve)
       if(command.irrigation.trigger_valve[i] === greenhouseState.actuator.valves[i])
         delete command.irrigation.trigger_valve[i];
 
-      if(lodash.isEmpty(command.irrigation.trigger_valve))
-        delete command.irrigation.trigger_valve;
-    }
+    if(command.irrigation.trigger_valve.every(v => v === undefined))
+      delete command.irrigation.trigger_valve;
   }
 
   if(command?.irrigation && lodash.isEmpty(command.irrigation))
