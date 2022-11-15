@@ -25,7 +25,7 @@ const Irrigation = (props: Props) => {
     <Dialog {...props} rootClass={styles.dialog} title="Irrigation">
       <div className={styles.main}>
         <div className="switch-container">
-          <div className={styles.modeLabel}>AUTO MODE</div>
+          <div>AUTO MODE</div>
           <Loadable isLoading={props.queuedCommands?.irrigation?.mode !== undefined ?? false}>
             <Switch
               checked={greenhouseState?.control.irrigation.mode === ControlMode.Automatic}
@@ -53,7 +53,7 @@ const Irrigation = (props: Props) => {
 
         { greenhouseState?.actuator.valves.map((valve, i) => (
           <div key={i} className="switch-container">
-            <div className={styles.modeLabel}>{greenhouseState.recipes.irrigation.zones[i].name}</div>
+            <div>{greenhouseState.recipes.irrigation.zones[i].name}</div>
             <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.trigger_valve?.[i] !== undefined ?? false}>
               <Switch
                 checked={valve}
