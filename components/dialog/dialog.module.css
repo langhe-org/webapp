@@ -1,3 +1,9 @@
+.main {
+    background-color: #EAE6E5;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: calc(50vw + -70px) 50px;
+}
 .content {
     display: grid;
     gap: 40px;

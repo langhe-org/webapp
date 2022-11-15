@@ -21,10 +21,6 @@ const styles = {
   backButton: {
     justifySelf: "start",
   },
-  manualControlHeader: {
-    color: "#c0c0c0",
-    fontSize: "28px",
-  }
 };
 
 interface Props {
@@ -78,7 +74,7 @@ const Lighting = (props: Props) => {
               />
             </FormControl>
           </Loadable>
-          <Typography variant='h1' sx={styles.manualControlHeader}>
+          <Typography className="manual-control-heading" variant='h2'>
             Manual Control
           </Typography>
           <Loadable isLoading={props.queuedCommands?.lighting?.light !== undefined ?? false}>

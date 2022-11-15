@@ -1,29 +1,14 @@
 .dialog {
-    background-color: #EAE6E5;
     background-image: url(/images/irrigation-background.svg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: calc(50vw + -70px) 50px;
 }
 .main {
     display: grid;
     row-gap: 22px;
 }
-.switchContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 .modeLabel {
     font-weight: 500;
     font-size: 16px;
     text-transform: uppercase;
-}
-.manualControlLabel {
-    font-weight: 500;
-    font-size: 16px;
-    text-transform: uppercase;
-    margin: 20px 0;
 }
 .zoneSwitchLabel {
     font-weight: 500;

@@ -5,7 +5,8 @@ import { ControlMode, GreenhouseState, SulfurIntensity, sulfur_intensity_display
 import Dialog from './dialog/dialog';
 import { Command } from '../types/command';
 import Loadable from './loadable';
-import { TextField } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 const styles = {
   main: {
@@ -52,6 +53,9 @@ const PestControl = (props: Props) => {
               label="Auto Mode"
             />
           </Loadable>
+          <Typography className="manual-control-heading" variant='h2' >
+            Manual Control
+          </Typography>
           <Loadable isLoading={props.queuedCommands?.ipm?.recipe?.intensity !== undefined ?? false}>
             <TextField
               label="Sulfur Level"
