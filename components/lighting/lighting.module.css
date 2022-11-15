@@ -1,0 +1,21 @@
+.dialog {
+    background-image: url(/images/lighting-background.svg);
+}
+
+.main {
+    display: grid;
+    row-gap: 16px;
+}
+
+.supplemental {
+    font-weight: 500;
+    font-size: 16px;
+    color: rgba(0, 0, 0, .8);
+}
+
+.inputLabel {
+    display: grid;
+    justify-content: start;
+    gap: 8px;
+    padding-bottom: 8px;
+}

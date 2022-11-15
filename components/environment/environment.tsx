@@ -25,7 +25,7 @@ const Environment = (props: Props) => {
     <Dialog {...props} title="Environment" rootClass={styles.dialog}>
       { user && <div className={styles.main}>
         <div className="switch-container">
-          <div className={styles.modeLabel}>AUTO MODE</div>
+          <div>AUTO MODE</div>
           <Loadable isLoading={props.queuedCommands?.environment?.mode !== undefined ?? false}>
             <Switch
               checked={greenhouseState?.control.environment.mode === ControlMode.Automatic}
@@ -61,7 +61,7 @@ const Environment = (props: Props) => {
           Manual Control
         </Typography>
         <div className="switch-container">
-          <div className={styles.modeLabel}>Heater</div>
+          <div>Heater</div>
           <Loadable isLoading={props.queuedCommands?.environment?.heater !== undefined ?? false}>
            <Switch
               checked={greenhouseState?.actuator.heater ?? false}
@@ -70,7 +70,7 @@ const Environment = (props: Props) => {
           </Loadable>
         </div>
         <div className="switch-container">
-          <div className={styles.modeLabel}>Ventilator</div>
+          <div>Ventilator</div>
           <Loadable isLoading={props.queuedCommands?.environment?.ventilator !== undefined ?? false}>
             <Switch
               checked={greenhouseState?.actuator.ventilator ?? false}
@@ -79,7 +79,7 @@ const Environment = (props: Props) => {
           </Loadable>
         </div>
         <div className="switch-container">
-          <div className={styles.modeLabel}>Exhaust Fan</div>
+          <div>Exhaust Fan</div>
           <Loadable isLoading={props.queuedCommands?.environment?.exhaust !== undefined ?? false}>
             <Switch
               checked={greenhouseState?.actuator.exhaust ?? false}

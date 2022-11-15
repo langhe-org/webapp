@@ -5,11 +5,6 @@
     display: grid;
     row-gap: 22px;
 }
-.modeLabel {
-    font-weight: 500;
-    font-size: 16px;
-    text-transform: uppercase;
-}
 .zoneSwitchLabel {
     font-weight: 500;
     font-size: 12px;
