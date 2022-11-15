@@ -30,7 +30,7 @@ export default function Dialog(props: Props) {
       onClose={props.onClose}
       TransitionComponent={Transition}
       classes={{
-        paper: props.rootClass
+        paper: `${styles.main} ${props.rootClass}`
       }}
     >
       <DialogContent className={styles.content}>

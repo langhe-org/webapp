@@ -1,0 +1,6 @@
+.dialog {
+    background-image: url(/images/environment-background.svg);
+}
+.main {
+    display: grid;
+}

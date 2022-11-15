@@ -10,11 +10,13 @@ export function temperatureMetricToImperial(value: number): number {
 export function temperatureToMetric(value: number, from: Units): number {
     if(from === Units.Imperial)
         value = temperatureImperialToMetric(value);
+    value = parseFloat(value.toFixed(3));
     return value;
 }
 export function temperatureFromMetric(value: number, to: Units): number {
     if(to === Units.Imperial)
         value = temperatureMetricToImperial(value);
+    value = parseFloat(value.toFixed(3));
     return value;
 }
 

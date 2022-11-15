@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, Chip, Icon, IconButton } from '@mui/material';
 import { api } from '../services/api'
 import { UserContext } from '../contexts/user'
-import Environment from '../components/environment'
+import Environment from '../components/environment/environment'
 import PestControl from '../components/pest-control'
 import Lighting from '../components/lighting'
 import Irrigation from '../components/irrigation/irrigation'

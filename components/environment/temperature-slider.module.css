@@ -1,0 +1,67 @@
+.main {
+    padding-top: 20px;
+}
+
+.topRow {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+}
+.topRow .label {
+    font-weight: 500;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.sliderRail {
+    background-color: #fff;
+    height: 8px;
+}
+.sliderTrack {
+    border: 0;
+    height: 8px;
+    background-image: linear-gradient(90deg, #3C76C2, #C86E36, #C86E36);
+    background-size: calc(100vw - 48px);
+}
+@media screen and (min-width: 900px) {
+    .sliderTrack {
+        background-size: 552px;
+    }
+}
+.sliderThumb {
+    background-color: #fff;
+}
+.sliderThumb:hover {
+    box-shadow: 0px 0px 0px 8px rgba(0, 0, 0, 0.16);
+}
+.sliderThumb.sliderActive {
+    box-shadow: 0px 0px 0px 12px rgba(0, 0, 0, 0.16);
+}
+/* increase specificity hack */
+.sliderValueLabel.sliderValueLabel {
+    transform: translateY(100%) scale(1);
+    font-size: 12;
+    font-weight: normal;
+    top: -6;
+    background-color: unset;
+
+    font-weight: 600;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.8);
+
+    transform: translateY(120%);
+}
+.sliderValueLabel * {
+    background: transparent;
+}
+.sliderValueLabel::after {
+    content: '°F';
+}
+
+.minMax {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 12px;
+    margin-bottom: 26px;
+}
