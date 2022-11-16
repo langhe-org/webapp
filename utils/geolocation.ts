@@ -17,5 +17,5 @@ export function latitudeLongitudeDisplay(latLong: LatLong) {
     else if(latLong.longitude < 0)
         longLabel = "°W";
 
-    return `${latLong.latitude.toFixed(2)}${latLabel} | ${latLong.longitude.toFixed(2)}${longLabel}`;
+    return `${Math.abs(latLong.latitude).toFixed(2)}${latLabel} | ${Math.abs(latLong.longitude).toFixed(2)}${longLabel}`;
 }
