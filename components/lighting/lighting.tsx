@@ -4,7 +4,7 @@ import { ControlMode, GreenhouseState } from '../../types/greenhouse-state'
 import Dialog from '../dialog/dialog';
 import Loadable from '../loadable';
 import { Command } from '../../types/command';
-import { timeWithoutSeconds } from '../../utils/time';
+import { timeWithoutSeconds, timeWithSeconds } from '../../utils/time';
 import TimeRelatedInput from "../time-related-input";
 import styles from "./lighting.module.css";
 import Divider from '@mui/material/Divider';
@@ -41,7 +41,7 @@ const Lighting = (props: Props) => {
               <TimeRelatedInput
                 type="time"
                 value={timeWithoutSeconds(greenhouseState.recipes.lighting.start_at)}
-                onChange={start_at => props.onCommand({lighting: { recipe: { start_at }}})}
+                onChange={start_at => props.onCommand({lighting: { recipe: { start_at: timeWithSeconds(start_at) }}})}
               />
             </label>
             <Divider />
@@ -52,7 +52,7 @@ const Lighting = (props: Props) => {
               <TimeRelatedInput
                 type="time"
                 value={timeWithoutSeconds(greenhouseState.recipes.lighting.stop_at)}
-                onChange={stop_at => props.onCommand({lighting: { recipe: { stop_at }}})}
+                onChange={stop_at => props.onCommand({lighting: { recipe: { stop_at: timeWithSeconds(stop_at) }}})}
               />
             </label>
             <Divider /> 
