@@ -9,6 +9,13 @@
     gap: 40px;
     align-content: start;
 }
+@media (min-width: 900px) {
+    .content {
+        width: 500px;
+        height: 80vh;
+        height: 80dvh;
+    }
+}
 .header {
     display: grid;
     grid-template-columns: 40px 1fr 40px;

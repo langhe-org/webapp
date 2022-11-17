@@ -19,9 +19,9 @@
     background-image: linear-gradient(90deg, #3C76C2, #C86E36, #C86E36);
     background-size: calc(100vw - 48px);
 }
-@media screen and (min-width: 900px) {
+@media (min-width: 900px) {
     .sliderTrack {
-        background-size: 552px;
+        background-size: 452px;
     }
 }
 .sliderThumb {
