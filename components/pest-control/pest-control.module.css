@@ -1,0 +1,12 @@
+.dialog {
+    background-image: url(/images/pest-control-background.svg);
+}
+
+.main {
+    display: grid;
+    row-gap: 20px;
+}
+
+.toggleButtonRoot {
+    display: inline-block;
+}

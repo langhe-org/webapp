@@ -3,7 +3,7 @@
 }
 .main {
     display: grid;
-    row-gap: 22px;
+    row-gap: 20px;
 }
 .zoneSwitchLabel {
     font-weight: 500;

@@ -1,8 +1,8 @@
 .main {
     display: grid;
+    row-gap: 20px;
     grid-template-columns: auto auto;
     justify-content: space-between;
-    gap: 16px;
     margin-top: 12px;
     width: 100%;
 }

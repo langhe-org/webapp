@@ -31,7 +31,7 @@ const TemperatureSlider = (props: Props) => {
   }, [props.value, user]);
 
   return (
-    <div className={styles.main}>
+    <div>
       <div className={styles.topRow}>
         <Typography className={styles.label}>{props.label}</Typography>
         <Icon>{props.icon}</Icon>
