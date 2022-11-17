@@ -21,7 +21,7 @@ interface Props {
 
 export default function Dialog(props: Props) {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = !useMediaQuery("(min-width:900px)");
 
   return (
     <MuiDialog
