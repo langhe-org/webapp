@@ -7,10 +7,6 @@
 .input, .input:hover {
     background-color: #fff;
 }
-.toggleButtonsGroup {
-    display: grid;
-    grid-auto-flow: column;
-}
 .timeDurationContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;

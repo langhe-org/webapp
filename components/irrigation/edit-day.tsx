@@ -74,13 +74,7 @@ const EditDay = (props: Props) => {
         />
         <div className='labeled'>
           <Typography className="label">Days</Typography>
-          <ToggleButtonGroup
-            color="primary"
-            aria-label="Weekdays"
-            classes={{
-              root: styles.toggleButtonsGroup
-            }}
-          >
+          <ToggleButtonGroup aria-label="Weekdays">
             <ToggleButton
               value="mon"
               selected={zone.monday}

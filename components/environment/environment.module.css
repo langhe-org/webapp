@@ -3,4 +3,5 @@
 }
 .main {
     display: grid;
+    row-gap: 20px;
 }
