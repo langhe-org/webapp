@@ -80,7 +80,7 @@ const Home: NextPage = () => {
     <div className={styles.main}>
       <div className={styles.widthHolder}>
         <div className={styles.header}>
-          <Typography className={styles.title} variant='h1'>Langhe</Typography>
+          <Typography className={styles.title} variant='h1'>langhe</Typography>
           <IconButton className={styles.settingLink} onClick={() => setActivePopup(ActivePopup.Settings)}>
             <Icon>person</Icon>
           </IconButton>
