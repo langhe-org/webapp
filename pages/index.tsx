@@ -21,7 +21,7 @@ import lodash from 'lodash'
 import { temperatureFromMetric, unitsSymbol } from '../utils/temperature'
 import { latitudeLongitudeDisplay } from '../utils/geolocation'
 
-const PING_INTERVAL_MILLIS = 3 * 1000;
+const PING_INTERVAL_MILLIS = 1 * 1000;
 
 enum ActivePopup {
   Settings,
