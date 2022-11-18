@@ -33,7 +33,7 @@ const Login: NextPage = () => {
 
   return (
     <div style={styles.main}>
-      <Typography variant='h2' sx={{fontSize: 22}}>Welcome to Langhe</Typography>
+      <Typography variant='h2' sx={{fontSize: 22}}>Welcome to langhe</Typography>
       <Typography variant='h2' sx={{fontSize: 18}}>Please log in</Typography>
       <GoogleLoginButton onLogin={onLogin} />
     </div>
