@@ -54,7 +54,9 @@ const IrrigationDay = (props: Props) => {
         </div>
         <div className={styles.duration}>
           <Typography className="label" color="#00000099">Duration</Typography>
-          <Typography className={styles.value}>{zone? millisecondsToMinutes(zone.duration) : ""} Mins</Typography>
+          <Typography className={styles.value}>
+            {zone? millisecondsToMinutes(zone.duration) : ""} Min{zone && millisecondsToMinutes(zone.duration) !== 1 && "s"}
+          </Typography>
         </div>
       </ButtonBase>
       <Divider />
