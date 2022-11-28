@@ -32,7 +32,9 @@ const Duration = (props: Props) => {
         >
             <Icon>chevron_left</Icon>
         </ButtonBase>
-        <Typography className={styles.text}>{props.value} mins</Typography>
+        <Typography className={styles.text}>
+          {props.value} min{props.value !== 1 && "s"}
+        </Typography>
         {/* <InputBase
           value={isNaN(props.value) ? "" : props.value}
           endAdornment="mins"
