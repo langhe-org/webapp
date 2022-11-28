@@ -145,6 +145,8 @@ const EditDay = (props: Props) => {
           <div className='labeled'>
             <Typography className="label">Duration</Typography>
             <Duration
+              min={0}
+              max={30}
               value={millisecondsToMinutes(zone.duration)}
               onChange={(value: number) => {
                 const duration = minutesToMilliseconds(value);
