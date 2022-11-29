@@ -5,6 +5,7 @@ interface Props {
   onChange: (value: string) => void;
   type: "time" | "date" | "datetime-local",
   value: string,
+  disabled?: boolean;
 }
 
 /*
@@ -66,6 +67,7 @@ const TimeRelatedInput = (props: Props) => {
     <input
       type={props.type}
       value={value}
+      disabled={props.disabled}
       ref={inputRef}
       onInput={onInput}
       onKeyUp={keyUp}

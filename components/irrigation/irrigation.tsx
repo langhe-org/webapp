@@ -8,6 +8,7 @@ import IrrigationDay from './day';
 import styles from './irrigation.module.css';
 import EditDay from './edit-day';
 import { useState } from 'react';
+import Disableable from '../disableable';
 
 interface Props {
   onClose: () => void;
@@ -20,6 +21,13 @@ interface Props {
 const Irrigation = (props: Props) => {
   const [editingZone, setEditingZone] = useState<number | undefined>(undefined);
   const greenhouseState = props.greenhouseState;
+
+  const isAuto: () => boolean = () => {
+    return greenhouseState?.control.irrigation.mode === ControlMode.Automatic;
+  }
+  const isManual: () => boolean = () => {
+    return greenhouseState?.control.irrigation.mode === ControlMode.Manual;
+  }
 
   return (
     <Dialog {...props} rootClass={styles.dialog} title="Irrigation">
@@ -34,53 +42,59 @@ const Irrigation = (props: Props) => {
           </Loadable>
         </div>
 
-        <div>
-          { greenhouseState?.recipes.irrigation.zones.map((zone, i) => (
-            <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.recipes?.[i] !== undefined ?? false}>
-              <IrrigationDay
-                recipeZone={zone}
-                onClick={() => {
-                  setEditingZone(i);
-                }}
-              ></IrrigationDay>
-            </Loadable>
-          )) }
-        </div>
-
-        <Typography className="manual-control-heading" variant='h2' >
-          Manual Control
-        </Typography>
-
-        { greenhouseState?.actuator.valves.map((valve, i) => (
-          <div key={i} className="switch-container">
-            <div>{greenhouseState.recipes.irrigation.zones[i].name}</div>
-            <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.trigger_valve?.[i] !== undefined ?? false}>
-              <Switch
-                checked={valve}
-                onChange={e => {
-                  let trigger_valve: (boolean | undefined)[] = [];
-                  trigger_valve[i] = e.target.checked;
-                  props.onCommand({irrigation: { trigger_valve }});
-                }}
-              />
-            </Loadable>
+        <Disableable isDisabled={isManual()}>
+          <div>
+            { greenhouseState?.recipes.irrigation.zones.map((zone, i) => (
+              <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.recipes?.[i] !== undefined ?? false}>
+                <IrrigationDay
+                  recipeZone={zone}
+                  onClick={() => {
+                    setEditingZone(i);
+                  }}
+                  disabled={isManual()}
+                ></IrrigationDay>
+              </Loadable>
+            )) }
           </div>
-        )) }
+        </Disableable>
 
-        { props.greenhouseState !== undefined && editingZone !== undefined && (
-          <EditDay
-            recipeZone={{...props.greenhouseState.recipes.irrigation.zones[editingZone]}}
-            onClose={() => {
-              setEditingZone(undefined);
-            }}
-            onChange={recipeCommand => {
-              let recipes: IrrigationRecipeCommand[] = [];
-              recipes[editingZone] = recipeCommand;
-              props.onCommand({irrigation: { recipes }});
-              setEditingZone(undefined);
-            }}
-          />
-        ) }
+        <Disableable isDisabled={isAuto()}>
+          <Typography className="manual-control-heading" variant='h2' >
+            Manual Control
+          </Typography>
+
+          { greenhouseState?.actuator.valves.map((valve, i) => (
+            <div key={i} className="switch-container">
+              <div>{greenhouseState.recipes.irrigation.zones[i].name}</div>
+              <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.trigger_valve?.[i] !== undefined ?? false}>
+                <Switch
+                  checked={valve}
+                  onChange={e => {
+                    let trigger_valve: (boolean | undefined)[] = [];
+                    trigger_valve[i] = e.target.checked;
+                    props.onCommand({irrigation: { trigger_valve }});
+                  }}
+                  disabled={isAuto()}
+                />
+              </Loadable>
+            </div>
+          )) }
+
+          { props.greenhouseState !== undefined && editingZone !== undefined && (
+            <EditDay
+              recipeZone={{...props.greenhouseState.recipes.irrigation.zones[editingZone]}}
+              onClose={() => {
+                setEditingZone(undefined);
+              }}
+              onChange={recipeCommand => {
+                let recipes: IrrigationRecipeCommand[] = [];
+                recipes[editingZone] = recipeCommand;
+                props.onCommand({irrigation: { recipes }});
+                setEditingZone(undefined);
+              }}
+            />
+          ) }
+        </Disableable>
       </div>
     </Dialog>
   )
