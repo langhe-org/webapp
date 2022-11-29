@@ -9,6 +9,7 @@ import { millisecondsToMinutes, timeDisplay } from '../../utils/time';
 interface Props {
   onClick: () => void;
   recipeZone?: IrrigationRecipeZone,
+  disabled?: boolean;
 }
 
 const IrrigationDay = (props: Props) => {
@@ -16,7 +17,7 @@ const IrrigationDay = (props: Props) => {
 
   return (
     <>
-      <ButtonBase className={styles.main} onClick={props.onClick}>
+      <ButtonBase className={styles.main} onClick={props.onClick} disabled={props.disabled}>
         <Typography className={styles.zoneName} color="primary">{zone?.name}</Typography>
         <div className={styles.days}>
           <div className={`${styles.day} ${zone?.monday ? styles.activeDay : ''}`}>

@@ -15,6 +15,7 @@ interface Props {
   icon: string,
   value: number,
   onChange: (value: number) => void;
+  disabled?: boolean;
 }
 
 const TemperatureSlider = (props: Props) => {
@@ -42,6 +43,7 @@ const TemperatureSlider = (props: Props) => {
         min={MIN_TEMP}
         max={MAX_TEMP}
         valueLabelDisplay="on"
+        disabled={props.disabled}
         onChange={e => {
           setValue((e.target as any).value)
         }}
