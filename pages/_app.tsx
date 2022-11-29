@@ -33,7 +33,6 @@ export default function MyApp(props: any) {
     <CacheProvider value={emotionCache}>
       <Head>
         <title>langhe</title>
-        <meta name="theme-color" content={theme.palette.primary.main} />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
         {/* CSS reset */}
