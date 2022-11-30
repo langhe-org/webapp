@@ -21,21 +21,31 @@ const Login: NextPage = () => {
 
   const styles = {
     main: {
-      textAlign: "center" as const,
       display: "grid",
       height: "100vh",
-      alignContent: "baseline",
+      alignContent: "center",
       justifyItems: "center",
-      rowGap: "40px",
-      padding: "100px 0",
+      rowGap: "34px",
+      backgroundColor: "#37562E",
+      color: "#ffffff",
+    },
+    h1: {
+      fontSize: 66,
+    },
+    copyright: {
+      fontSize: 12,
+      position: "absolute",
+      bottom: 16,
     },
   }
 
+  const year = new Date().getFullYear();
+
   return (
     <div style={styles.main}>
-      <Typography variant='h2' sx={{fontSize: 22}}>Welcome to langhe</Typography>
-      <Typography variant='h2' sx={{fontSize: 18}}>Please log in</Typography>
+      <Typography variant='h1' sx={styles.h1}>langhe</Typography>
       <GoogleLoginButton onLogin={onLogin} />
+      <Typography sx={styles.copyright}>© {year} langhe</Typography>
     </div>
   )
 }
@@ -76,7 +86,8 @@ const GoogleLoginButton = (props: GoogleLoginButtonProps) => {
     }
   }, []);
   return (
-    <div>
+    // hardcoded height so that there are no content shifting when button is updating it's internal UI
+    <div style={{height: 44}}>
       <Script src="https://accounts.google.com/gsi/client" />
 
       <div id="g_id_onload"
