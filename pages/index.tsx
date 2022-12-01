@@ -235,10 +235,10 @@ function nextTimeString(datetime: string): string {
   let tomorrow = new Date();
   tomorrow.setSeconds(tomorrow.getSeconds() + dayInSeconds);
   if(date > tomorrow) {
-    let date = nextDateFormatter.format(dayInSeconds);
-    return `NEXT ON ${date}`;
+    let day = nextDateFormatter.format(date);
+    return `NEXT ON ${day}`;
   } else {
-    let time = nextTimeFormatter.format(dayInSeconds);
+    let time = nextTimeFormatter.format(date);
     return `NEXT @ ${time}`;
   }
 }
