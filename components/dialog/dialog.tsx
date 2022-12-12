@@ -16,7 +16,9 @@ interface Props {
   open: boolean,
   children: ReactNode,
   rootClass?: string,
+  contentClass?: string,
   title: string,
+  secondaryAction?: ReactNode,
 }
 
 export default function Dialog(props: Props) {
@@ -33,12 +35,13 @@ export default function Dialog(props: Props) {
         paper: `${styles.main} ${props.rootClass}`
       }}
     >
-      <DialogContent className={styles.content}>
+      <DialogContent className={`${styles.content} ${props.contentClass}`}>
         <div className={styles.header}>
           <IconButton onClick={props.onClose}>
             <Icon>chevron_left</Icon>
           </IconButton>
           <Typography className={styles.title}>{props.title}</Typography>
+          {props.secondaryAction}
         </div>
         {props.children}
       </DialogContent>

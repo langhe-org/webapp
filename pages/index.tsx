@@ -15,11 +15,12 @@ import Environment from '../components/environment/environment'
 import PestControl from '../components/pest-control/pest-control'
 import Lighting from '../components/lighting/lighting'
 import Irrigation from '../components/irrigation/irrigation'
-import Settings from '../components/settings'
+import Settings from '../components/settings/settings'
 import { Command } from '../types/command'
 import lodash from 'lodash'
 import { temperatureFromMetric, unitsSymbol } from '../utils/temperature'
 import { latitudeLongitudeDisplay } from '../utils/geolocation'
+import router from 'next/router'
 
 const PING_INTERVAL_MILLIS = 1 * 1000;
 
@@ -48,6 +49,10 @@ const Home: NextPage = () => {
 
   const getGreenhouseState = () => {
     if(!user) return;
+    if(!user.greenhouse_ids[0]) {
+      router.push(`/link-greenhouse`);
+      return;
+    }
     api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
       .then(greenhouseState => {
         setGreenhouseState(greenhouseState)
@@ -70,6 +75,10 @@ const Home: NextPage = () => {
   }, []);
   useEffect(() => {
     if(!user) return;
+    if(!user.greenhouse_ids[0]) {
+      router.push(`/link-greenhouse`);
+      return;
+    }
     api<Greenhouse>(`/greenhouse/${user.greenhouse_ids[0]}`)
       .then(greenhouse => {
         setGreenhouse(greenhouse)

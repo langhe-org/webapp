@@ -1,0 +1,32 @@
+.dialogContent {
+    grid-template-rows: auto 1fr;
+}
+.main {
+    display: grid;
+    height: 100%;
+    align-content: space-between;
+}
+.settingsSection {
+    display: grid;
+    gap: 22px;
+}
+.idContainer {
+    display: grid;
+}
+.idContainer .relink {
+    justify-self: end;
+}
+.bottomSection {
+    display: grid;
+}
+.contactUs {
+    background: rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(7px);
+    border-radius: 4px;
+    padding: 12px;
+    text-align: center;
+}
+.privacyPolicyLink {
+    color: #353535;
+    justify-self: center;
+}
