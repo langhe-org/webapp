@@ -43,7 +43,6 @@ const PestControl = (props: Props) => {
           <Disableable isDisabled={isManual()}>
             <Loadable isLoading={props.queuedCommands?.ipm?.recipe?.intensity !== undefined ?? false}>
               <Typography>Sulfur Level</Typography>
-              {/* <Typography className={styles.toggleButtonGroupLabel}>Sulfur Level</Typography> */}
               <ToggleButtonGroup
                 aria-label="sulfur level"
                 classes={{
