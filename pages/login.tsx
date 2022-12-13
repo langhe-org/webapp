@@ -36,6 +36,8 @@ const Login: NextPage = () => {
       fontSize: 12,
       position: "absolute",
       bottom: 16,
+      textAlign: "center",
+      width: "100%",
     },
   }
 
