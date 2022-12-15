@@ -65,7 +65,7 @@ const Irrigation = (props: Props) => {
 
           { greenhouseState?.actuator.valves.map((valve, i) => (
             <div key={i} className="switch-container">
-              <div>{greenhouseState.recipes.irrigation.zones[i].name}</div>
+              <div className={styles.zoneSwitchLabel}>{greenhouseState.recipes.irrigation.zones[i].name}</div>
               <Loadable key={i} isLoading={props.queuedCommands?.irrigation?.trigger_valve?.[i] !== undefined ?? false}>
                 <Switch
                   checked={valve}

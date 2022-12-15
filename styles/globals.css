@@ -1,5 +1,10 @@
 :root {
     font-family: Poppins;
+    /*
+        have no idea why, but without this the `hyphen` css property doesn't work in Chromium and Safari.
+        this is set by default by the user-agent but is being overridden by `all: unset`.
+    */
+    -webkit-locale: "en";
 }
 
 .MuiToggleButtonGroup-root {
