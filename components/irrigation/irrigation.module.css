@@ -6,6 +6,6 @@
     row-gap: 20px;
 }
 .zoneSwitchLabel {
-    font-weight: 500;
-    font-size: 12px;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 }
