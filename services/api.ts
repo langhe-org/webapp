@@ -1,7 +1,7 @@
 import Router from "next/router";
 
 export const JWT_KEY = "JWT";
-const BASE_URL = "https://proto2-357815.uc.r.appspot.com/v1";
+const BASE_URL = "https://api.langhe.app/v1";
 
 export function api<T>(url: string, method: string = "GET", data?: any): Promise<T> {
     return fetch(BASE_URL + url, {
