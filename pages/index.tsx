@@ -8,8 +8,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import { CardActionArea, Chip, Icon, IconButton } from '@mui/material';
-import { api } from '../services/api'
+import { api, NotFoundError, onApiError } from '../services/api'
 import { UserContext } from '../contexts/user'
 import Environment from '../components/environment/environment'
 import PestControl from '../components/pest-control/pest-control'
@@ -38,27 +39,35 @@ const Home: NextPage = () => {
   const [greenhouseState, setGreenhouseState] = useState<GreenhouseState>();
   const [queuedCommands, setQueuedCommands] = useState<Command>({});
   const [activePopup, setActivePopup] = useState<ActivePopup>();
+  const [noState, setNoState] = useState<boolean>(false);
 
   const onCommand = (command: Command) => {
     if(!user) return;
     setQueuedCommands(queuedCommands => {
       return structuredClone(lodash.merge(queuedCommands, command));
     });
-    api(`/greenhouse-command/${user.greenhouse_ids[0]}`, "post", command);
+    api(`/greenhouse-command/${user.greenhouse_ids[0]}`, "post", command)
+      .catch(onApiError);
   }
 
   const getGreenhouseState = () => {
     if(!user) return;
     if(!user.greenhouse_ids[0]) {
-      router.push(`/link-greenhouse`);
+      router.push(`/create-greenhouse`);
       return;
     }
     api<GreenhouseState>(`/greenhouse-state/${user.greenhouse_ids[0]}`)
       .then(greenhouseState => {
+        setNoState(false);
         setGreenhouseState(greenhouseState)
         setQueuedCommands(queuedCommands => {
           return removeResolvedCommands(queuedCommands, greenhouseState);
         });
+      })
+      .catch(e => {
+        if(e instanceof NotFoundError) {
+          setNoState(true);
+        }
       })
       .finally(() => {
         setTimeout(getGreenhouseState, PING_INTERVAL_MILLIS)
@@ -76,7 +85,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if(!user) return;
     if(!user.greenhouse_ids[0]) {
-      router.push(`/link-greenhouse`);
+      router.push(`/create-greenhouse`);
       return;
     }
     api<Greenhouse>(`/greenhouse/${user.greenhouse_ids[0]}`)
@@ -88,6 +97,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.widthHolder}>
+        {noState && <Alert severity="error">No greenhouse data yet.</Alert> }
         <div className={styles.header}>
           <Typography className={styles.title} variant='h1'>langhe</Typography>
           <IconButton className={styles.settingLink} onClick={() => setActivePopup(ActivePopup.Settings)}>

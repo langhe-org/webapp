@@ -14,7 +14,7 @@ const Login: NextPage = () => {
   const onLogin = (user: User) => {
     setUser(user);
     if(!user.greenhouse_ids.length)
-      router.push(`/link-greenhouse`);
+      router.push(`/create-greenhouse`);
     else
       router.push(`/`)
   }

@@ -61,7 +61,7 @@ const Settings = (props: Props) => {
           greenhouse_ids: []
         });
         setIsLoading(false);
-        router.push(`/link-greenhouse`);
+        router.push(`/create-greenhouse`);
       })
       .catch(() => {
         alert("Error saving changes");

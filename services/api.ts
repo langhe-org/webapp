@@ -12,6 +12,10 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
             "content-type": "application/json",
         }
     })
+        .catch(() => {
+            alert("Network Error");
+            throw new NetworkError;
+        })
         .then(res => {
             if(res.status === 401) {
                 Router.push(`login`);
@@ -19,6 +23,12 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
             } else {
                 return res
             }
+        })
+        .then(res => {
+            if(res.status === 404)
+                throw new NotFoundError("Not found");
+            else
+                return res;
         })
         .then(res => {
             if(res.status < 200 || res.status > 299) {
@@ -29,11 +39,16 @@ export function api<T>(url: string, method: string = "GET", data?: any): Promise
         })
         .then(res => res.json())
         .catch(e => {
-            if(!(e instanceof UnauthorizedError))
-                alert("Error");
-            console.error(e);
             throw e;
-        })
+        });
 }
 
-class UnauthorizedError extends Error {}
+export function onApiError(e: Error) {
+    if(!(e instanceof UnauthorizedError))
+        alert("Error");
+    console.error(e);
+}
+
+export class NetworkError extends Error {}
+export class UnauthorizedError extends Error {}
+export class NotFoundError extends Error {}

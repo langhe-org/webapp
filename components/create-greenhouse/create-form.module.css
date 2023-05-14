@@ -1,0 +1,20 @@
+.form {
+    display: grid;
+    padding: 30px 10px;
+    gap: 24px;
+    justify-items: center;
+    min-height: 100vh;
+    align-content: start;
+}
+.mapWrapper {
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    width: 100%;
+}
+.map {
+    height: 300px;
+    width: 100%;
+    border: solid #37562E 3px;
+    border-radius: 10px;
+}
