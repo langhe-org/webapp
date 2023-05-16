@@ -31,7 +31,7 @@ const CreateSuccess = (props: Props) => {
 
       <div className={styles.tokenWrapper}>
         <Typography variant='h1' sx={{ fontSize: 14 }}>
-          Copy the greenhouse's token, and paste it into the greenhouse-controller's code.
+          Copy the greenhouse&apos;s token, and paste it into the greenhouse-controller&apos;s code.
         </Typography>
 
         <Card>
