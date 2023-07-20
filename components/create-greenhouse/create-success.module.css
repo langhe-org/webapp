@@ -11,14 +11,32 @@
 }
 .tokenCard {
     display: grid;
-    grid-template-columns: 1fr 90px;
+    grid-template-columns: auto 1fr 90px;
     align-items: center;
-    justify-items: end;
     column-gap: 24px;
+    padding: 0;
 }
-.token {
+.tokenCard:last-child {
+    /* reset an MUI style */
+    padding-bottom: 0;
+}
+.title, .value, .action {
+    margin: 24px;
+}
+.title {
+    justify-self: start;
+}
+.value {
+    justify-self: start;
     word-break: break-all;
     font-size: 12px;
     font-family: monospace;
     text-align: start;
+}
+.action {
+    justify-self: end;
+}
+.divider {
+    grid-column: 1 / -1;
+    width: 100%;
 }

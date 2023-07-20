@@ -8,6 +8,7 @@ import type { Map, Marker } from "leaflet";
 import { Greenhouse } from '../types/greenhouse';
 import CreateForm, { NewGreenhouseData } from '../components/create-greenhouse/create-form';
 import CreateSuccess from '../components/create-greenhouse/create-success';
+import { Props as CreateSuccessProps } from '../components/create-greenhouse/create-success';
 
 
 const styles = {
@@ -23,7 +24,7 @@ const styles = {
 
 const CreateGreenhouse: NextPage = () => {
   const {user, setUser} = useContext(UserContext);
-  const [token, setToken] = useState<string | undefined>();
+  const [greenhouseAuth, setGreenhouseAuth] = useState<CreateSuccessProps | undefined>();
 
   const onSubmit = (data: NewGreenhouseData) => {
     interface Res {
@@ -36,15 +37,18 @@ const CreateGreenhouse: NextPage = () => {
           ...user,
           greenhouse_ids: [greenhouse.id]
         } as User);
-        setToken(token);
+        setGreenhouseAuth({
+          token,
+          id: greenhouse.id
+        });
       });
   }
 
   return (
     <div>
       <div style={styles.widthHolder}>
-        {token ? (
-          <CreateSuccess token={token} />
+        {greenhouseAuth ? (
+          <CreateSuccess token={greenhouseAuth.token} id={greenhouseAuth.id} />
         ) : (
           <CreateForm onSubmit={onSubmit} />
         )}
